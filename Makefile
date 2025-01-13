@@ -1,22 +1,19 @@
 CC = gcc
-CFLAGS = -Wall $(shell sdl2-config --cflags)
-LDFLAGS = $(shell sdl2-config --libs)
-SRC = src/main.c
-OBJ = build/main.o
-EXEC = build/main
+CFLAGS = -Wall -I/usr/include/SDL2 -I../include -D_REENTRANT
+LDFLAGS = -lSDL2 -lm
 
-# La règle par défaut
-all: $(EXEC)
+SRC = src/main.c src/mylib.c
+OBJ = build/main.o build/mylib.o
+OUT = build/main
 
-$(EXEC): $(OBJ)
-	$(CC) -o $(EXEC) $(OBJ) $(LDFLAGS)
+all: $(OUT)
 
-# Construire les fichiers objets dans build/obj
-build/main.o: src/main.c
+$(OUT): $(OBJ)
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+build/%.o: src/%.c
+	mkdir -p build
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f build/*.o $(EXEC)
-
-install:
-	cp $(EXEC) /usr/local/bin
+	rm -rf build
