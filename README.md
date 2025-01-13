@@ -5,6 +5,10 @@ Projet Génie Logiciel – Réseau de neurones
 
 Commandes dans l'ordre :
 
+
+
 (make clean)
+
 make
+
 ./build/main
