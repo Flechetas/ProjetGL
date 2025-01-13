@@ -5,7 +5,7 @@
 
 void drawSpiral(SDL_Renderer *renderer, int n) {
 
-    // Spiral 1 : Direction horaire
+    // Spirale rouge
     for (int i = 1; i < 1.5*n; i++) {
         double angle = i * 2*M_PI/n;
         int x = WINDOW_WIDTH/2 + (int)(WINDOW_WIDTH/2*i/n * cos(angle));
@@ -14,7 +14,7 @@ void drawSpiral(SDL_Renderer *renderer, int n) {
         SDL_RenderDrawPoint(renderer, x, y);
     }
 
-    // Spiral 2 : Direction anti-horaire
+    // Spirale bleue
     for (int i = 1; i < 1.5*n; i++) {
         double angle = i * 2*M_PI/n;
         int x = WINDOW_WIDTH/2 - (int)(WINDOW_WIDTH/2*i/n * cos(-angle));
