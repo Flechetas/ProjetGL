@@ -2,7 +2,7 @@
 #define CONFIG_H
 
 // Dimensions de la fenêtre
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 768
+#define WINDOW_HEIGHT 768
 
 #endif // CONFIG_H

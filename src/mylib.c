@@ -3,24 +3,22 @@
 #include "../include/config.h"
 #include "../include/mylib.h"
 
-void drawSpiral(SDL_Renderer *renderer, int centerX, int centerY) {
-    const double angleStep = M_PI / 60; // 30° en radians
-    const int totalSteps = 240;        // 2 tours (720° / 30°)
+void drawSpiral(SDL_Renderer *renderer, int n) {
 
     // Spiral 1 : Direction horaire
-    for (int i = 0; i < totalSteps; i++) {
-        double angle = i * angleStep;
-        int x = centerX + (int)(20 * angle * cos(angle));
-        int y = centerY + (int)(20 * angle * sin(angle));
+    for (int i = 1; i < 1.5*n; i++) {
+        double angle = i * 2*M_PI/n;
+        int x = WINDOW_WIDTH/2 + (int)(WINDOW_WIDTH/2*i/n * cos(angle));
+        int y = WINDOW_HEIGHT/2 + (int)(WINDOW_HEIGHT/2*i/n * sin(angle));
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE); // Rouge
         SDL_RenderDrawPoint(renderer, x, y);
     }
 
     // Spiral 2 : Direction anti-horaire
-    for (int i = 0; i < totalSteps; i++) {
-        double angle = i * angleStep;
-        int x = centerX - (int)(20 * angle * cos(-angle));
-        int y = centerY + (int)(20 * angle * sin(-angle));
+    for (int i = 1; i < 1.5*n; i++) {
+        double angle = i * 2*M_PI/n;
+        int x = WINDOW_WIDTH/2 - (int)(WINDOW_WIDTH/2*i/n * cos(-angle));
+        int y = WINDOW_HEIGHT/2 + (int)(WINDOW_HEIGHT/2*i/n * sin(-angle));
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE); // Bleu
         SDL_RenderDrawPoint(renderer, x, y);
     }

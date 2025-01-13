@@ -12,7 +12,7 @@ int main(void) {
     SDL_Window *window = SDL_CreateWindow("Spirale SDL",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
-                                          500, 500,
+                                          WINDOW_WIDTH, WINDOW_HEIGHT,
                                           SDL_WINDOW_RESIZABLE);
     if (!window) {
         printf("Erreur SDL_CreateWindow: %s\n", SDL_GetError());
@@ -31,10 +31,10 @@ int main(void) {
     SDL_SetRenderDrawColor(renderer, 0,0,0,0);
     SDL_RenderClear(renderer);
 
-    drawSpiral(renderer, 250, 250);
+    drawSpiral(renderer, 100);
 
     SDL_RenderPresent(renderer);
-    SDL_Delay(5000);
+    SDL_Delay(6000);
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
