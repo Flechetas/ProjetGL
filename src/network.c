@@ -45,6 +45,18 @@ Layer initLayerRandom(int size, Layer next) {
     layer->bias = initRandomBiases(layer->n);
     return layer;
 }
+void freeLayer(Layer layer) {
+    int n = layer->n;
+    free(layer->neurons);
+    if(layer->next != NULL) {
+        free(layer->bias);
+        for(int i = 0 ; i < n ; i++) {
+            free(layer->weight[i]);
+        }
+        free(layer->weight);
+    }
+    free(layer);
+}
 
 
 float th(float x) {
