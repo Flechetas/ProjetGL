@@ -33,7 +33,7 @@
  *
  */
 
-Model fromFile(const char *filepath);
+int fromFile(const char *filepath, Model *model);
 void saveToFile(Model model, const char *filepath);
 
 #endif

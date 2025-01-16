@@ -95,9 +95,7 @@ void parseBiases(char *line, float *biases, int n) {
 }
 
 
-Model fromFile(const char *filepath) {
-         
-    Model model;
+int fromFile(const char *filepath, Model *model) {
     FILE *fp;
     char *line = NULL;
     char *trimmed = NULL;
@@ -112,11 +110,13 @@ Model fromFile(const char *filepath) {
 
     fp = fopen(filepath, "r");
     if(fp == NULL) {
-        return NULL;
+        return -1;
     }
 
-    model = malloc(sizeof(struct model));
-    model->input = NULL;
+    Model md = malloc(sizeof(struct model));
+    *model = md;
+
+    md->input = NULL;
     prev = NULL;
     curr = NULL;
 
@@ -135,7 +135,7 @@ Model fromFile(const char *filepath) {
         switch (step) {
             case MODEL_LAYER_N_STEP:
                 n = parseLayerN(line);
-                model->layer_n = n;
+                md->layer_n = n;
                 step=LAYER_SIZE_STEP;
                 break;
             case LAYER_SIZE_STEP:
@@ -146,8 +146,8 @@ Model fromFile(const char *filepath) {
                 }
                 curr->previous = prev;
                 curr->next = NULL;
-                if(model->input == NULL) {
-                    model->input = curr;
+                if(md->input == NULL) {
+                    md->input = curr;
                 }
                 curr_weight_line = 0;
                 parseLayerSize(line, &curr->n, &curr->w);
@@ -185,5 +185,5 @@ Model fromFile(const char *filepath) {
     if(line) {
         free(line);
     }
-    return model;
+    return 0;
 }
