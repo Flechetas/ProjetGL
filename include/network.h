@@ -14,6 +14,7 @@ typedef struct layer {
 } *Layer;
 
 typedef struct model {
+    int layer_n;
     Layer input;
 } *Model;
 
