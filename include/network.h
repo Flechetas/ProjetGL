@@ -21,6 +21,7 @@ typedef struct model {
 
 Layer initLayerRandom(int size, Layer next);
 void freeLayer(Layer layer);
+void freeModel(Model model);
 int countLayers(Model model);
 
 #endif

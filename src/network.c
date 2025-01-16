@@ -57,6 +57,15 @@ void freeLayer(Layer layer) {
     }
     free(layer);
 }
+void freeModel(Model model) {
+    Layer curr = model->input;
+    while(curr != NULL) {
+        Layer next = curr->next;
+        freeLayer(curr);
+        curr = next;
+    }
+    free(model);
+}
 
 
 float th(float x) {
