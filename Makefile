@@ -1,19 +1,47 @@
+NAME = ./build/main
 CC = gcc
-CFLAGS = -Wall -I/usr/include/SDL2 -I../include -D_REENTRANT
+MKDIR = mkdir -p
+RM = rm -f
+RMDIR = rm -rf
+CFLAGS = -Wall -I/usr/include/SDL2 -Iinclude -D_REENTRANT
 LDFLAGS = -lSDL2 -lm
 
-SRC = src/main.c src/mylib.c src/parser.c src/network.c
-OBJ = build/main.o build/mylib.o build/parser.o build/network.o
-OUT = build/main
+SRC_DIR = src
+INC_DIR = include
+BUILD_DIR = build
 
-all: $(OUT)
+SRCS = $(shell find $(SRC_DIR) -name '*.c')
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+SRC_SUBDIRS = $(shell find $(SRC_DIR) -type d)
+BUILD_SUBDIRS = $(SRC_SUBDIRS:$(SRC_DIR)%=$(BUILD_DIR)%)
 
-$(OUT): $(OBJ)
-	$(CC) -o $@ $^ $(LDFLAGS)
+.PHONY: all clean directories check-compiler
 
-build/%.o: src/%.c
-	mkdir -p build
-	$(CC) $(CFLAGS) -c $< -o $@
+all: check-compiler directories $(NAME)
+
+check-compiler:
+	@echo "Checking GCC version..."
+	@$(CC) --version
+	@if [ ! -x "$$(command -v $(CC))" ]; then \
+		echo "Error: GCC not found"; \
+		exit 1; \
+	fi
+
+directories: $(BUILD_SUBDIRS)
+
+$(BUILD_SUBDIRS):
+	@$(MKDIR) $@
+
+$(NAME): $(OBJS)
+	@echo "Linking $(NAME)..."
+	$(CC) $(OBJS) $(LDFLAGS) $(LIBS) -o $@
+	@echo "Build complete!"
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | directories
+	@echo "Compiling $<..."
+	$(CC) $(DEPFLAGS) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf build
+	@echo "Cleaning build files..."
+	$(RMDIR) $(BUILD_DIR)
+	$(RM) $(NAME)
