@@ -1,7 +1,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "network.h"
+#include "../network.h"
 
 /*
  * NNF File description
