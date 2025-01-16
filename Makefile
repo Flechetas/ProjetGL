@@ -2,8 +2,8 @@ CC = gcc
 CFLAGS = -Wall -I/usr/include/SDL2 -I../include -D_REENTRANT
 LDFLAGS = -lSDL2 -lm
 
-SRC = src/main.c src/mylib.c src/network.c
-OBJ = build/main.o build/mylib.o build/network.o
+SRC = src/main.c src/mylib.c src/parser.c src/network.c
+OBJ = build/main.o build/mylib.o build/parser.o build/network.o
 OUT = build/main
 
 all: $(OUT)
