@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include "../../include/codec/nnf.h"
-#include "../../include/network.h"
+#include "../../include/neuralnet/model.h"
 
 int saveHeaderToFile(FILE *fp) {
     char *line = "# NNF File\n\n";
