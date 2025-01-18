@@ -57,41 +57,53 @@ int parseLayerN(char *line) {
     int n;
     int ret;
     ret = sscanf(line, "%d", &n);
-    assert(ret != -1);
-    return n;
+    return ret;
 }
 
-void parseLayerSize(char *line, int *layer_s, int *layer_w) {
+int parseLayerSize(char *line, int *layer_s, int *layer_w) {
     int ret;
     ret = sscanf(line, "%d,%d", layer_s, layer_w);
-    assert(ret != -1);
+    return ret;
 }
 
-void parseWeights(char *line, float **weights, int n, int w) {
+int parseWeights(char *line, float **weights, int n, int w) {
+    if(w == 0) {
+        return -1;
+    }
     float f = 0;
     int ind = 0;
+    int ret;
     char *token;
     weights[n] = malloc(sizeof(float) * w);
     token = strtok(line, ",");
     while(token != NULL) {
-        sscanf(token, "%f", &f);
+        ret = sscanf(token, "%f", &f);
+        if(ret < 0) {
+            return -1;
+        }
         weights[n][ind] = f;
         token = strtok(NULL, ",");
         ind++;
     }
+    return 0;
 }
 
-void parseBiases(char *line, float *biases, int n) {
+int parseBiases(char *line, float *biases, int n) {
     float f = 0;
     int ind = 0;
+    int ret;
     char *token;
     token = strtok(line, ",");
     while(token != NULL) {
-        sscanf(token, "%f", &f);
+        ret = sscanf(token, "%f", &f);
+        if(ret < 0) {
+            return -1;
+        }
         biases[ind] = f;
         token = strtok(NULL, ",");
         ind++;
     }
+    return 0;
 }
 
 
@@ -102,6 +114,7 @@ int fromFile(const char *filepath, Model *model) {
     size_t len = 0;
     ssize_t read = 0;
     int step = 0;
+    int ret = 0;
     
     int n = 0;
     Layer prev;
@@ -135,6 +148,9 @@ int fromFile(const char *filepath, Model *model) {
         switch (step) {
             case MODEL_LAYER_N_STEP:
                 n = parseLayerN(line);
+                if(n < 0) {
+                    ret = -1;
+                }
                 md->layer_n = n;
                 step=LAYER_SIZE_STEP;
                 break;
@@ -150,26 +166,46 @@ int fromFile(const char *filepath, Model *model) {
                     md->input = curr;
                 }
                 curr_weight_line = 0;
-                parseLayerSize(line, &curr->n, &curr->w);
+                ret = parseLayerSize(line, &curr->n, &curr->w);
+                if(ret < 0) {
+                    break;
+                }
                 curr->neurons = malloc(sizeof(float) * curr->n);
                 curr->weight = malloc(sizeof(float*) * curr->n);
                 curr->bias = malloc(sizeof(float) * curr->n);
                 step=LAYER_WEIGHTS_STEP;
                 break;
             case LAYER_WEIGHTS_STEP:
-                parseWeights(line, curr->weight, curr_weight_line, curr->w);
+                ret = parseWeights(line, curr->weight, curr_weight_line, curr->w);
+                if(ret < 0) {
+                    break;
+                }
                 curr_weight_line++;
                 if(curr_weight_line == curr->n) {
                     step=LAYER_BIAS_STEP;
                 }
                 break;
             case LAYER_BIAS_STEP:
-                parseBiases(line, curr->bias, curr->n);
+                ret = parseBiases(line, curr->bias, curr->n);
+                if(ret < 0) {
+                    break;
+                }
                 step=LAYER_SIZE_STEP;
                 break;
         }
         free(trimmed);
+
+        if(ret < 0) {
+            freeModel(md);
+            *model = NULL;
+            fclose(fp);
+            if(line) {
+                free(line);
+            }
+            return -1; 
+        }
     }
+
 
     Layer last = malloc(sizeof(struct layer));
     last->n = curr->w;
