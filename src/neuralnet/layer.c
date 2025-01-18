@@ -1,18 +1,6 @@
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/network.h"
-
-
-int countLayers(Model model) {
-    int n = 0;
-    Layer curr = model->input;
-    while(curr != NULL) {
-        curr = curr->next;
-        n++; 
-    }
-    return n;
-}
+#include "../../include/neuralnet/layer.h"
 
 
 float **initRandomWeights(int sizex, int sizey) {
@@ -56,18 +44,4 @@ void freeLayer(Layer layer) {
         free(layer->weight);
     }
     free(layer);
-}
-void freeModel(Model model) {
-    Layer curr = model->input;
-    while(curr != NULL) {
-        Layer next = curr->next;
-        freeLayer(curr);
-        curr = next;
-    }
-    free(model);
-}
-
-
-float th(float x) {
-    return (exp(x) - exp(-x)) / (exp(x) + exp(-x)); 
 }

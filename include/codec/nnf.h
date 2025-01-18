@@ -1,7 +1,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "../network.h"
+#include "../neuralnet/layer.h"
+#include "../neuralnet/model.h"
 
 /*
  * NNF File description

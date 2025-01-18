@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include "../../include/codec/nnf.h"
-#include "../../include/network.h"
+#include "../../include/neuralnet/model.h"
 
 #define COMMENT_CHAR #
 #define MODEL_LAYER_N_STEP 0

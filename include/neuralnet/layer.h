@@ -1,5 +1,5 @@
-#ifndef NETWORK_H
-#define NETWORK_H
+#ifndef LAYER_H
+#define LAYER_H
 
 typedef struct layer {
     int n;
@@ -13,15 +13,8 @@ typedef struct layer {
     struct layer* next;
 } *Layer;
 
-typedef struct model {
-    int layer_n;
-    Layer input;
-} *Model;
-
 
 Layer initLayerRandom(int size, Layer next);
 void freeLayer(Layer layer);
-void freeModel(Model model);
-int countLayers(Model model);
 
 #endif
