@@ -31,10 +31,10 @@ int main(void) {
     SDL_SetRenderDrawColor(renderer, 0,0,0,0);
     SDL_RenderClear(renderer);
 
-    drawSpiral(renderer, 100);
+    drawSpiral(renderer);
 
     SDL_RenderPresent(renderer);
-    SDL_Delay(6000);
+    SDL_Delay(3000);
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
