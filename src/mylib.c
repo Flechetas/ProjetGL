@@ -3,23 +3,21 @@
 #include "../include/config.h"
 #include "../include/mylib.h"
 
-void drawSpiral(SDL_Renderer *renderer, int n) {
+void drawSpiral(SDL_Renderer *renderer) {
 
-    // Spirale rouge
-    for (int i = 1; i < 1.5*n; i++) {
-        double angle = i * 2*M_PI/n;
-        int x = WINDOW_WIDTH/2 + (int)(WINDOW_WIDTH/2*i/n * cos(angle));
-        int y = WINDOW_HEIGHT/2 + (int)(WINDOW_HEIGHT/2*i/n * sin(angle));
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE); // Rouge
+    // Spirale bleue
+    for (int t = 0; t < WINDOW_WIDTH/sqrt(2); t+=2) {
+        int x = WINDOW_WIDTH/2 + t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/2 + t*sin(t*M_PI/180);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE); // Bleu
         SDL_RenderDrawPoint(renderer, x, y);
     }
 
-    // Spirale bleue
-    for (int i = 1; i < 1.5*n; i++) {
-        double angle = i * 2*M_PI/n;
-        int x = WINDOW_WIDTH/2 - (int)(WINDOW_WIDTH/2*i/n * cos(-angle));
-        int y = WINDOW_HEIGHT/2 + (int)(WINDOW_HEIGHT/2*i/n * sin(-angle));
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE); // Bleu
+    //Spirale rouge
+    for (int t = 1; t < WINDOW_WIDTH/sqrt(2); t+=2) {
+        int x = WINDOW_WIDTH/2 - t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/2 - t*sin(t*M_PI/180);
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE); // Rouge
         SDL_RenderDrawPoint(renderer, x, y);
     }
 
