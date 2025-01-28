@@ -14,7 +14,7 @@ typedef struct layer {
 } *Layer;
 
 
-Layer initLayerRandom(int size, Layer next);
+Layer createLayerRandom(int size, Layer next);
 void freeLayer(Layer layer);
 
 #endif

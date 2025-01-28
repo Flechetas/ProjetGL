@@ -20,7 +20,7 @@ float *initRandomBiases(int size) {
     }
     return bias;
 }
-Layer initLayerRandom(int size, Layer next) {
+Layer createLayerRandom(int size, Layer next) {
     Layer layer = malloc(sizeof(struct layer));
     layer->n = size;
     layer->neurons = malloc(sizeof(float) * size);
