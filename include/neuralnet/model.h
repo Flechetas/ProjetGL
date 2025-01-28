@@ -8,6 +8,7 @@ typedef struct model {
     Layer input;
 } *Model;
 
+Model createModelRandom(int layer_n, ...);
 void freeModel(Model model);
 int countLayers(Model model);
 
