@@ -18,7 +18,7 @@ Model createModelRandom(int layer_n, ...) {
     if(layer_n < 2) {
         return NULL;
     }
-    int *sizes = malloc(sizeof(int) * layer_n);
+    int *sizes = malloc(sizeof(int) * layer_n); // represents the sizes of the intermediary layers
     va_list args;
     va_start(args, layer_n);
     for(int i = 0 ; i < layer_n ; i++) {
