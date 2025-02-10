@@ -10,3 +10,13 @@
  - Fonction qui effectue le calcul de la valeur d'un neurone
  - Fonction qui applique ce calcul sur toutes les neurones d'une couche
  - Fonction qui calcule les valeurs de la couche finale etant donnee une modele au depart
+
+## Tester le reseau
+
+ - Fonction qui donne la matrice avec les couleurs des points finales
+ - Fonction de comparaison entre resultat et resultat attendu 
+
+ ## Divers 
+
+ - Tests unitaires des fonctions existants
+ - Documentation des fonctions existants
