@@ -31,10 +31,10 @@ int main(void) {
     SDL_SetRenderDrawColor(renderer, 0,0,0,0);
     SDL_RenderClear(renderer);
 
-    drawSpiral(renderer);
+    drawSpiral(renderer, "points.txt");
 
     SDL_RenderPresent(renderer);
-    SDL_Delay(3000);
+    SDL_Delay(5000);
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

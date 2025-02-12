@@ -5,6 +5,6 @@
 #include <SDL2/SDL.h>
 
 // Déclaration de la fonction drawSpiral
-void drawSpiral(SDL_Renderer *renderer);
+void drawSpiral(SDL_Renderer *renderer, const char *filename);
 
 #endif // MYLIB_H
