@@ -16,7 +16,7 @@
  - Fonction qui donne la matrice avec les couleurs des points finales
  - Fonction de comparaison entre resultat et resultat attendu 
 
- ## Divers 
+## Divers 
 
- - Tests unitaires des fonctions existants
- - Documentation des fonctions existants
+ - Tests unitaires des fonctions existants -> Cedric
+ - Documentation des fonctions existants -> Sebastian

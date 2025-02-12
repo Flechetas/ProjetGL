@@ -55,7 +55,7 @@ float layer_hypTangent(float x) {
 float layer_neuronSum(Layer l, int ind) {
     float sum = 0.0;
     for (int i = 0; i < l->n; i++) {
-        sum += l->neurons[i] + l->weight[i][ind]; 
+        sum += l->neurons[i] * l->weight[i][ind]; 
         // ind represents which neurone we are trying to calculate for
     }
 
