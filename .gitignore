@@ -1,6 +1,8 @@
 .vscode/
 build/
 *.nnf
+src/test.c
+test
 
 # Prerequisites
 *.d
