@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #include "../../include/neuralnet/layer.h"
 
 
 float **initRandomWeights(int sizex, int sizey) {
+    srand(time(NULL));
     float **weights = malloc(sizeof(float*) * sizex);
     for(int i = 0 ; i < sizex ; i++) {
         weights[i] = malloc(sizeof(float) * sizey);
@@ -15,6 +17,7 @@ float **initRandomWeights(int sizex, int sizey) {
     return weights;
 }
 float *initRandomBiases(int size) {
+    srand(time(NULL));
     float *bias = malloc(sizeof(float) * size);
     for(int i = 0 ; i < size ; i++) {
         bias[i] = (float)rand()/(float)RAND_MAX;
