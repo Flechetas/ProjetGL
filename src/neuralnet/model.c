@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <time.h>
 #include "../../include/neuralnet/model.h"
 
 
@@ -15,6 +16,7 @@ int countLayers(Model model) {
 }
 
 Model createModelRandom(int layer_n, ...) {
+    srand(time(NULL));
     if(layer_n < 2) {
         return NULL;
     }
