@@ -8,14 +8,16 @@ LDFLAGS = -lSDL2 -lm
 
 SRC_DIR = src
 INC_DIR = include
+TEST_DIR = test
 BUILD_DIR = build
 
 SRCS = $(shell find $(SRC_DIR) -name '*.c')
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+TESTS = $(shell find $(TEST_DIR) -name '*.c')
 SRC_SUBDIRS = $(shell find $(SRC_DIR) -type d)
 BUILD_SUBDIRS = $(SRC_SUBDIRS:$(SRC_DIR)%=$(BUILD_DIR)%)
 
-.PHONY: all clean directories check-compiler
+.PHONY: all clean directories check-compiler test
 
 all: check-compiler directories $(NAME)
 
@@ -40,6 +42,11 @@ $(NAME): $(OBJS)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | directories
 	@echo "Compiling $<..."
 	$(CC) $(DEPFLAGS) $(CFLAGS) -c $< -o $@
+
+test: all $(TESTS)
+	@echo "Starting test..."
+	$(CC) -o t $(TESTS)
+	./t
 
 clean:
 	@echo "Cleaning build files..."
