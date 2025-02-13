@@ -9,7 +9,7 @@ int main(void) {
         return 1;
     }
 
-    SDL_Window *window = SDL_CreateWindow("Spirale SDL",
+    SDL_Window *window = SDL_CreateWindow("Coloration par Distance",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
                                           WINDOW_WIDTH, WINDOW_HEIGHT,
@@ -28,10 +28,14 @@ int main(void) {
         return 1;
     }
 
-    SDL_SetRenderDrawColor(renderer, 0,0,0,0);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
-    drawSpiral(renderer, "points.txt");
+    drawSpiral(renderer, "spirales.txt");
+
+    //generateColorFile("spirales.txt", "output.txt");
+
+    drawColoredPoints(renderer, "output.txt");
 
     SDL_RenderPresent(renderer);
     SDL_Delay(5000);
