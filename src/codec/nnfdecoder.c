@@ -57,7 +57,7 @@ int parseLayerN(char *line) {
     int n;
     int ret;
     ret = sscanf(line, "%d", &n);
-    return ret;
+    return n;
 }
 
 int parseLayerSize(char *line, int *layer_s, int *layer_w) {
