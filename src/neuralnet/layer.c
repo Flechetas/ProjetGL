@@ -28,6 +28,9 @@ Layer createLayerRandom(int size, Layer next) {
     Layer layer = malloc(sizeof(struct layer));
     layer->n = size;
     layer->neurons = malloc(sizeof(float) * size);
+    for(int i = 0 ; i < size ; i++) {
+        layer->neurons[i] = 0;
+    }
     layer->next = next;
     if(next == NULL) {
         return layer;
