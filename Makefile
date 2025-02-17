@@ -13,11 +13,11 @@ BUILD_DIR = build
 
 SRCS = $(shell find $(SRC_DIR) -name '*.c')
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
-TESTS = $(shell find $(TEST_DIR) -name '*.c')
+TESTS = $(filter-out ./$(SRC_DIR)/main.c, $(shell find . -name '*.c'))
 SRC_SUBDIRS = $(shell find $(SRC_DIR) -type d)
 BUILD_SUBDIRS = $(SRC_SUBDIRS:$(SRC_DIR)%=$(BUILD_DIR)%)
 
-.PHONY: all clean directories check-compiler test
+.PHONY: all clean directories test-directories check-compiler tests
 
 all: check-compiler directories $(NAME)
 
@@ -41,12 +41,18 @@ $(NAME): $(OBJS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | directories
 	@echo "Compiling $<..."
-	$(CC) $(DEPFLAGS) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
-test: all $(TESTS)
-	@echo "Starting test..."
-	$(CC) -o t $(TESTS)
-	./t
+
+$(BUILD_TESTS_SUBDIRS):
+	@$(MKDIR) $@
+
+tests: check-compiler
+	@echo "Compiling tests ..."
+	$(CC) $(TESTS) $(LDFLAGS) $(LIBS) -o tests
+	@echo "Test build complete!"
+	@-./tests
+	@rm ./tests
 
 clean:
 	@echo "Cleaning build files..."
