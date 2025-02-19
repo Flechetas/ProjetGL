@@ -8,8 +8,8 @@
  * @brief Represents the neural network itself
  */
 typedef struct model {
-    int layer_n;
-    Layer input;
+    int layer_n; ///< Number of layers in the model
+    Layer input; ///< The first layer of the model
 } *Model;
 
 /**
