@@ -34,7 +34,20 @@
  *
  */
 
+/**
+ * @brief Allocates and loads a model from file 
+ * @param filepath relative path to the save file
+ * @param model pointer where the model will be stored
+ * @return 0 on success, -1 on error
+ */
 int fromFile(const char *filepath, Model *model);
+
+/**
+ * @brief Saves a model to a file
+ * @param filepath relative path to the save file
+ * @param model pointer to the model which is being saved
+ * @return 0 on success, -1 on error
+ */
 void saveToFile(Model model, const char *filepath);
 
 #endif
