@@ -12,6 +12,65 @@ int equals(float a, float b) {
     return fabs(a - b) < epsilon;
 }
 
+int equalsWeights(float **w1, float **w2, int sizeX, int sizeY) {
+    for(int i = 0 ; i < sizeX ; i++) {
+        for(int j = 0 ; j < sizeY ; j++) {
+            if(w1[i][j] != w2[i][j]) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+int equalsBias(float *b1, float *b2, int len) {
+    for(int i = 0 ; i < len ; i++) {
+        if(b1[i] != b2[i]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int equalsModels(Model a, Model b) {
+    if(countLayers(a) != countLayers(b)) {
+        return 1;
+    }
+
+    Layer aLayer = a->input;
+    Layer bLayer = b->input;
+    while(aLayer->next && bLayer->next) {
+        if(aLayer->n != bLayer->n) {
+            return 1;
+        }
+        if(aLayer->w != bLayer->w) {
+            return 1;
+        }
+        if(!equalsWeights(aLayer->weight, bLayer->weight, aLayer->n, aLayer->w)) {
+            return 1;
+        }
+        if(!equalsBias(aLayer->bias, bLayer->bias, aLayer->n)) {
+            return 1;
+        }
+
+        bLayer = bLayer->next;
+        aLayer = aLayer->next;
+    }
+
+    return 0;
+}
+
+void TestEncodingDecodingRandom(CuTest* tc) {
+    int ret;
+    char *testFileName = "test_data.nnf";
+    
+    Model model = createModelRandom(5, 3, 10, 15, 12, 4);
+    saveToFile(model, testFileName);
+
+    Model copy;
+    ret = fromFile(testFileName, &copy);
+
+    CuAssertIntEquals(tc, 0, equalsModels(model, copy));
+}
 
 void TestDecoding(CuTest* tc) {
     int ret;
@@ -103,6 +162,7 @@ CuSuite* CuGetCodecSuite(void) {
 	CuSuite* suite = CuSuiteNew();
 
 	SUITE_ADD_TEST(suite, TestDecoding);
+    SUITE_ADD_TEST(suite, TestEncodingDecodingRandom);
     return suite;
 }
 
