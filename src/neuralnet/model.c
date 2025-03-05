@@ -15,6 +15,18 @@ int countLayers(Model model) {
     return n;
 }
 
+Layer firstLayer(Model model) {
+    return model->input;
+}
+
+Layer lastLayer(Model model) {
+    Layer current = model->input;
+    while(current->next != NULL) {
+        current = current->next;
+    }
+    return current;
+}
+
 Model createModelRandom(int layer_n, ...) {
     srand(time(NULL));
     if(layer_n < 2) {
