@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#include "../../include/neuralnet/layer.h"
+#include "neuralnet/layer.h"
 
 
 float **initRandomWeights(int sizex, int sizey) {

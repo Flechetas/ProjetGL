@@ -1,7 +1,7 @@
 #include <math.h>
 #include <SDL2/SDL.h>
-#include "../include/config.h"
-#include "../include/mylib.h"
+#include "config.h"
+#include "mylib.h"
 
 void drawSpiral(SDL_Renderer *renderer) {
 

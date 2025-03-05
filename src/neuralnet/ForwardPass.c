@@ -1,9 +1,9 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "../../include/neuralnet/model.h"
-#include "../../include/neuralnet/layer.h"
-#include "../../include/neuralnet/ForwardPass.h"
+#include "neuralnet/model.h"
+#include "neuralnet/layer.h"
+#include "neuralnet/ForwardPass.h"
 
 
 // Fonction d'initialisation d'un neurone pour un pixel donné 
