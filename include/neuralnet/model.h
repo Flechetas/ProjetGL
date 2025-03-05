@@ -34,4 +34,16 @@ void freeModel(Model model);
  */
 int countLayers(Model model);
 
+/**
+ * @param model A given model
+ * @return The first layer of the model
+ */
+
+Layer firstLayer(Model model);
+/**
+ * @param model A given model
+ * @return The last layer of the model
+ */
+Layer lastLayer(Model model);
+
 #endif
