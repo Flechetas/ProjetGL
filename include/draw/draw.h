@@ -4,10 +4,28 @@
 
 #include <SDL2/SDL.h>
 
-// Déclaration de la fonction drawSpiral
-void drawSpiral(SDL_Renderer *renderer, const char *filename);    // Dessine les deux spirales
-void determineColor(const char *filename, int px, int py, int *r_out, int *b_out); // Détermine toutes les couleurs à chaque pixel par rapport aux pixels rouges et bleus
-void generateColorFile(const char *inputFile, const char *outputFile); // Créé output.txt
-void drawColoredPoints(SDL_Renderer *renderer, const char *filename); // Créé à partir de output.txt l'image exemple
+/**
+ * @brief Function that creates a spiral scene with the sizes given in config.HAVE_ATOF
+ * @param renderer Presents the spiral scene
+ */
+void drawSpiral(SDL_Renderer *renderer, const char *filename);
+
+/**
+ * @brief Determines all colors at each pixel based on red and blue pixels
+ * @param renderer Presents the spiral scene
+ */
+void determineColor(const char *filename, int px, int py, int *r_out, int *b_out);
+
+/**
+ * @brief Creates output.txt
+ * @param renderer Presents the spiral scene
+ */
+void generateColorFile(const char *inputFile, const char *outputFile);
+
+/**
+ * @brief Creates the example image from output.txt
+ * @param renderer Presents the spiral scene
+ */
+void drawColoredPoints(SDL_Renderer *renderer, const char *filename);
 
 #endif // MYLIB_H
