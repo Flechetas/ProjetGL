@@ -1,15 +1,32 @@
-# Projet-GL
-Projet Génie Logiciel – Réseau de neurones
+# Projet Génie Logiciel - Réseau de neurones
 
-À compiler sous terminal WSL (VS Code compatible).
-- Utilisation de la librairie SDL2 : 
-    - sudo apt install libsdl2-dev
+## Dépendances
 
-Commandes dans l'ordre :
+- SDL2 :
+```bash
+sudo apt install libsdl2-dev
+```
 
+## Build and run
 
-(make clean)
-
+```bash
 make
-
 ./build/main
+```
+## Tests
+
+```bash
+make tests
+```
+## Docs
+
+```bash
+make docs
+```
+Entrypoint is docs/index.html
+
+## Clean
+
+```bash
+make clean
+```
