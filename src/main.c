@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
-#include "../include/config.h"
-#include "../include/mylib.h"
+#include "config.h"
+#include "mylib.h"
 
 int main(void) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {

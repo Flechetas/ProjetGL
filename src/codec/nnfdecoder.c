@@ -4,8 +4,8 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include "../../include/codec/nnf.h"
-#include "../../include/neuralnet/model.h"
+#include "codec/nnf.h"
+#include "neuralnet/model.h"
 
 #define COMMENT_CHAR #
 #define MODEL_LAYER_N_STEP 0

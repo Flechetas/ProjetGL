@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include "../../include/neuralnet/backpropagation.h"
-#include "../../include/neuralnet/ForwardPass.h"
+#include "neuralnet/backpropagation.h"
+#include "neuralnet/ForwardPass.h"
 
 #define EPSILON 0.01
 
