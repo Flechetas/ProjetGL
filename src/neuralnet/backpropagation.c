@@ -2,7 +2,6 @@
 #include "neuralnet/backpropagation.h"
 #include "neuralnet/ForwardPass.h"
 
-#define EPSILON 0.01
 
 float *outputCost(Layer layer, float *expected) {
     int len = layer->n;
@@ -33,7 +32,7 @@ float *layerCost(Layer layer, float *expected) {
     return cost;
 }
 
-void backpropagate(Model model, float *input, float *expected) {
+void backpropagate(Model model, float training_step, float *input, float *expected) {
     int step = countLayers(model) - 1;
     float **costs = malloc(sizeof(float*) * model->layer_n);
     
@@ -54,7 +53,7 @@ void backpropagate(Model model, float *input, float *expected) {
         int w = layer->w;
         for(int i = 0 ; i < len ; i++) {
             for(int j = 0 ; j < w ; j++) {
-                layer->weight[i][j] = layer->weight[i][j] + EPSILON * costs[step][i] * activationFunction(layer->neurons[i] * layer->weight[i][j]);
+                layer->weight[i][j] = layer->weight[i][j] + training_step * costs[step][i] * activationFunction(layer->neurons[i] * layer->weight[i][j]);
             }
         }
         layer = layer->next;
