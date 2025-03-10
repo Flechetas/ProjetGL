@@ -1,10 +1,11 @@
 .vscode/
 build/
+docs/
 *.nnf
+*.txt
+
 src/test.c
 test
-
-docs/
 
 # Prerequisites
 *.d
