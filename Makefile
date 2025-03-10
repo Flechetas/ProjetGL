@@ -50,7 +50,7 @@ $(BUILD_TESTS_SUBDIRS):
 
 tests: check-compiler
 	@echo "Compiling tests ..."
-	$(CC) $(TESTS) $(LDFLAGS) $(LIBS) -o tests
+	$(CC) $(TESTS) $(LDFLAGS) $(CFLAGS) $(LIBS) -o tests
 	@echo "Test build complete!"
 	@-./tests
 	@rm ./tests
