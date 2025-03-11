@@ -1,8 +1,8 @@
 #ifndef BENCHMARK_H
 #define BENCHMARK_H
 
-#import "neuralnet/model.h"
+#include "neuralnet/model.h"
 
-double benchmarkAccuracy(Model model, float **input, int input_size, float **expected, int expected_size, int batch_size);
-    
+int benchmark(Model model, int batch_size, float **input, int input_size, float **expected, int expected_size, float *out_accuracy, int *out_duration);
+
 #endif //BENCHMARK_H
