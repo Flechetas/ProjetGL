@@ -3,7 +3,26 @@
 #include "config/config.h"
 #include "draw/draw.h"
 
-void drawSpiral(SDL_Renderer *renderer, const char *filename) {
+void drawSpiral(SDL_Renderer *renderer) {
+
+    for (int t = 0; t < WINDOW_WIDTH/sqrt(2); t+=2) {
+        int x = WINDOW_WIDTH/2 + t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/2 + t*sin(t*M_PI/180);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE); // Bleu
+        SDL_RenderDrawPoint(renderer, x, y);
+    }
+
+    for (int t = 1; t < WINDOW_WIDTH/sqrt(2); t+=2) {
+        int x = WINDOW_WIDTH/2 - t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/2 - t*sin(t*M_PI/180);
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE); // Rouge
+        SDL_RenderDrawPoint(renderer, x, y);
+    }
+
+    SDL_RenderPresent(renderer);
+}
+
+void computeSpiralValues(const char *filename) {
     FILE *file = fopen (filename, "w");
     if(file == NULL) {
         perror("erreur d'ouverture du fichier.");
@@ -12,7 +31,7 @@ void drawSpiral(SDL_Renderer *renderer, const char *filename) {
 
     // Spirale bleue
     fprintf(file,"bleu\n");
-
+    
     for (int t = 0; t < WINDOW_WIDTH/sqrt(2); t+=2) {
         int x = WINDOW_WIDTH/2 + t*cos(t*M_PI/180);
         int y = WINDOW_HEIGHT/2 + t*sin(t*M_PI/180);
@@ -21,20 +40,11 @@ void drawSpiral(SDL_Renderer *renderer, const char *filename) {
             fprintf(file, "%d\n", x);
             fprintf(file, "%d\n", y);
         }
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE); // Bleu
-        
-        for(int x_temp = x-1 ; x_temp < x+2 ; x_temp++){
-            for(int y_temp = y-1 ; y_temp < y+2 ; y_temp++){
-
-                SDL_RenderDrawPoint(renderer, x_temp, y_temp);
-            }
-        }
     }
 
     //Spirale rouge
     fprintf(file,"rouge\n");
-
+    
     for (int t = 1; t < WINDOW_WIDTH/sqrt(2); t+=2) {
         int x = WINDOW_WIDTH/2 - t*cos(t*M_PI/180);
         int y = WINDOW_HEIGHT/2 - t*sin(t*M_PI/180);
@@ -43,19 +53,9 @@ void drawSpiral(SDL_Renderer *renderer, const char *filename) {
             fprintf(file, "%d\n", x);
             fprintf(file, "%d\n", y);
         }
-
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE); // Rouge
-
-        for(int x_temp = x-1 ; x_temp < x+2 ; x_temp++){
-            for(int y_temp = y-1 ; y_temp < y+2 ; y_temp++){
-
-                SDL_RenderDrawPoint(renderer, x_temp, y_temp);
-            }
-        }
     }
 
     fclose(file);
-    SDL_RenderPresent(renderer);
 }
 
 void determineColor(const char *filename, int px, int py, int *r_out, int *b_out) {
