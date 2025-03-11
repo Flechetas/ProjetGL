@@ -2,14 +2,14 @@
 
 ## draw
 
-### draw.c
+### draw.c *Sebastian*
 
 - Lecture/ecriture fichier
 - Fonction qui prend une matrice de flottants (ou double), et change les couleurs sur la fenetre
 
 ## neuralnet
 
-### ForwardPass.c
+### ForwardPass.c *Xavier*
 
 - Finaliser les fonctions
 - Nettoyer le fichier (?)
@@ -21,15 +21,19 @@
 
 **ENLEVER LES BIAIS**
 
-## training
+## training *Cedric*
 
 - entrainer le truc
 - effectuer des sauvegardes
 
-## benchmarks
+## benchmarks *Xavier*
 
 - training, forward pass, backpropagation, ... 
 
 ## Generalisation
 
 - On insere n'importe quelles entrees x, y et on observe le resultat.
+
+## Tests unitaires
+
+- Faire des tests sur les fonctions non-basiques (layer.c, model.c, ForwardPass.c *en dernier*)
