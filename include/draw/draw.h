@@ -1,5 +1,5 @@
-#ifndef MYLIB_H
-#define MYLIB_H
+#ifndef DRAW_H
+#define DRAW_H
 #define M_PI 3.14159265358979323846
 
 #include <SDL2/SDL.h>
@@ -34,4 +34,4 @@ void generateColorFile(const char *inputFile, const char *outputFile);
  */
 void drawColoredPoints(SDL_Renderer *renderer, const char *filename);
 
-#endif // MYLIB_H
+#endif // DRAW_H
