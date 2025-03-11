@@ -31,8 +31,9 @@ int main(void) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
-    drawSpiral(renderer, "spirales.txt");
-
+    drawSpiral(renderer);
+    
+    computeSpiralValues("spirales.txt");
     //generateColorFile("spirales.txt", "output.txt");
 
     drawColoredPoints(renderer, "output.txt");

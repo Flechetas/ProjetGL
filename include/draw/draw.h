@@ -8,7 +8,13 @@
  * @brief Function that creates a spiral scene with the sizes given in config.HAVE_ATOF
  * @param renderer Presents the spiral scene
  */
-void drawSpiral(SDL_Renderer *renderer, const char *filename);
+void drawSpiral(SDL_Renderer *renderer);
+
+/**
+ * @brief Precomputes the values of the spiral in the screen and save it to given file
+ * @param filename the given file's name
+ */
+void computeSpiralValues(const char *filename);
 
 /**
  * @brief Determines all colors at each pixel based on red and blue pixels
