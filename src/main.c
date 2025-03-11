@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
-#include "../include/config.h"
-#include "../include/mylib.h"
+#include "config/config.h"
+#include "draw/draw.h"
 
 int main(void) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -9,7 +9,7 @@ int main(void) {
         return 1;
     }
 
-    SDL_Window *window = SDL_CreateWindow("Spirale SDL",
+    SDL_Window *window = SDL_CreateWindow("Coloration par Distance",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
                                           WINDOW_WIDTH, WINDOW_HEIGHT,
@@ -28,13 +28,17 @@ int main(void) {
         return 1;
     }
 
-    SDL_SetRenderDrawColor(renderer, 0,0,0,0);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
-    drawSpiral(renderer);
+    drawSpiral(renderer, "spirales.txt");
+
+    //generateColorFile("spirales.txt", "output.txt");
+
+    drawColoredPoints(renderer, "output.txt");
 
     SDL_RenderPresent(renderer);
-    SDL_Delay(3000);
+    SDL_Delay(5000);
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

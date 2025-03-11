@@ -2,8 +2,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
-#include "../include/codec/nnf.h"
-#include "../include/neuralnet/model.h"
+#include "codec/nnf.h"
+#include "neuralnet/model.h"
 #include "CuTest.h"
 
 

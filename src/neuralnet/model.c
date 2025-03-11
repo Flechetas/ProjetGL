@@ -2,7 +2,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <time.h>
-#include "../../include/neuralnet/model.h"
+#include "neuralnet/model.h"
 
 
 int countLayers(Model model) {
