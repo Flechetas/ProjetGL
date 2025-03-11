@@ -25,11 +25,6 @@
  *      .              .            .
  *      w[layer_s][0] ... w[layer_s][layer_w]
  *
- *  # biases
- *  # one line of size layer_s.
- *  # comma separated float64 values. Spaces allowed and ignored .
- *      b[0] ... b[layer_s]
- *
  *  # Lines starting with # will be ignored.
  *
  */
