@@ -24,7 +24,7 @@ void initRandomInputs(float *inputs, int size) {
 // Fonction de transfert (tangente hyperbolique)
 float activationFunction(float x)
 { 
-    return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
+    return (expf(x) - expf(-x)) / (expf(x) + expf(-x));
 }
 
 
