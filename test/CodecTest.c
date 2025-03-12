@@ -22,14 +22,6 @@ int equalsWeights(float **w1, float **w2, int sizeX, int sizeY) {
     }
     return 0;
 }
-int equalsBias(float *b1, float *b2, int len) {
-    for(int i = 0 ; i < len ; i++) {
-        if(b1[i] != b2[i]) {
-            return 1;
-        }
-    }
-    return 0;
-}
 
 int equalsModels(Model a, Model b) {
     if(countLayers(a) != countLayers(b)) {
@@ -46,9 +38,6 @@ int equalsModels(Model a, Model b) {
             return 1;
         }
         if(!equalsWeights(aLayer->weight, bLayer->weight, aLayer->n, aLayer->w)) {
-            return 1;
-        }
-        if(!equalsBias(aLayer->bias, bLayer->bias, aLayer->n)) {
             return 1;
         }
 
@@ -79,14 +68,12 @@ void TestDecoding(CuTest* tc) {
                   "2, 5\n\n"
                   "0.2, 0.5, 0.6, 0.7, 0.9\n"
                   "0.1, 0.3, 0.4, 0.6, 0.8\n\n"
-                  "0.5, 0.8\n\n"
                   "5, 3\n\n"
                   "0.8, 0.3, 0.7\n"
                   "0.7, 0.9, 0.1\n"
                   "0.3, 0.7, 0.2\n"
                   "0.5, 0.4, 0.6\n"
-                  "0.3, 0.5, 0.9\n\n"
-                  "0.9, 0.6, 0.7, 0.1, 0.6";
+                  "0.3, 0.5, 0.9\n\n";
     
     FILE *f = fopen(testFileName, "w");
     CuAssertPtrNotNull(tc, f);
@@ -118,9 +105,6 @@ void TestDecoding(CuTest* tc) {
     CuAssertTrue(tc, equals(curr->weight[1][3], 0.6));
     CuAssertTrue(tc, equals(curr->weight[1][4], 0.8));
 
-    CuAssertTrue(tc, equals(curr->bias[0], 0.5));
-    CuAssertTrue(tc, equals(curr->bias[1], 0.8));
-
     curr = curr->next;
     CuAssertTrue(tc, curr->n == 5);
     CuAssertTrue(tc, curr->w == 3);
@@ -143,12 +127,6 @@ void TestDecoding(CuTest* tc) {
     CuAssertTrue(tc, equals(curr->weight[4][0], 0.3));
     CuAssertTrue(tc, equals(curr->weight[4][1], 0.5));
     CuAssertTrue(tc, equals(curr->weight[4][2], 0.9));
-
-    CuAssertTrue(tc, equals(curr->bias[0], 0.9));
-    CuAssertTrue(tc, equals(curr->bias[1], 0.6));
-    CuAssertTrue(tc, equals(curr->bias[2], 0.7));
-    CuAssertTrue(tc, equals(curr->bias[3], 0.1));
-    CuAssertTrue(tc, equals(curr->bias[4], 0.6));
 
     curr = curr->next;
     CuAssertTrue(tc, curr->n == 3);

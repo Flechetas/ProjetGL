@@ -10,7 +10,6 @@ typedef struct layer {
     int w; ///< Number of neurons in the next layer
 
     float *neurons; ///< Array of neuron values
-    float *bias; ///< Array of bias values for each neuron 
     float **weight; ///< 2D array (size n*w) of weight connections
 
     struct layer* previous; ///< The previous layer in the model
