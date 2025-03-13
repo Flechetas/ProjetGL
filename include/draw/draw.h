@@ -6,6 +6,11 @@
 
 /**
  * @brief Function that creates a spiral scene with the sizes given in config.HAVE_ATOF
+ */
+int displaySpiral();
+
+/**
+ * @brief Function that creates a spiral scene with the sizes given in config.HAVE_ATOF
  * @param renderer Presents the spiral scene
  */
 void drawSpiral(SDL_Renderer *renderer);
