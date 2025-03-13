@@ -39,10 +39,15 @@ Model createModelRandom(int layer_n, ...) {
         sizes[i] = va_arg(args, int);
     }
     va_end(args);
+    
+    Model model = createModelRandomFromArray(layer_n, sizes);
+    return model;
+}
 
-    Layer curr = createLayerRandom(sizes[layer_n-1], NULL);
+Model createModelRandomFromArray(int layer_n, int layer_sizes[]) {
+    Layer curr = createLayerRandom(layer_sizes[layer_n-1], NULL);
     for(int i = layer_n-2 ; i >= 0 ; i--) {
-        Layer new = createLayerRandom(sizes[i], curr);
+        Layer new = createLayerRandom(layer_sizes[i], curr);
         curr->previous = new;
         curr = new;
     }
