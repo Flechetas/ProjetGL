@@ -1,25 +1,11 @@
 #include <SDL2/SDL.h>
-#include <stdio.h>
-#include "../include/config.h"
-#include "../include/mylib.h"
+#include "cli/cli.h"
 
-int main(void) {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        printf("Erreur SDL_Init: %s\n", SDL_GetError());
-        return 1;
-    }
+int main(int argc, char *argv[]) {
 
-    SDL_Window *window = SDL_CreateWindow("Spirale SDL",
-                                          SDL_WINDOWPOS_CENTERED,
-                                          SDL_WINDOWPOS_CENTERED,
-                                          WINDOW_WIDTH, WINDOW_HEIGHT,
-                                          SDL_WINDOW_RESIZABLE);
-    if (!window) {
-        printf("Erreur SDL_CreateWindow: %s\n", SDL_GetError());
-        SDL_Quit();
-        return 1;
-    }
+    return exec(argc, argv);
 
+<<<<<<< HEAD
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer) {
         printf("Erreur SDL_CreateRenderer: %s\n", SDL_GetError());
@@ -40,4 +26,6 @@ int main(void) {
     SDL_DestroyWindow(window);
     SDL_Quit();
     return 0;
+=======
+>>>>>>> dev
 }

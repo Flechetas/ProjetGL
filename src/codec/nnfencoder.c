@@ -4,8 +4,8 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include "../../include/codec/nnf.h"
-#include "../../include/neuralnet/model.h"
+#include "codec/nnf.h"
+#include "neuralnet/model.h"
 
 int saveHeaderToFile(FILE *fp) {
     char *line = "# NNF File\n\n";
@@ -67,32 +67,9 @@ int saveWeightsToFile(float *weights, int len, FILE *fp) {
     free(res);
     return len;
 }
-int saveBiasesToFile(float *biases, int len, FILE *fp) {
-    char *fmt = "%s%f, ";
-    char *res = malloc(sizeof(char));
-    res[0] = '\0';
-    int reslen;
-
-    for(int i = 0 ; i < len ; i++) {
-        int newlen = snprintf(NULL, 0, fmt, res, biases[i]);
-        char *newres = malloc(sizeof(char) * (newlen+1));
-        int len = sprintf(newres, fmt, res, biases[i]);
-        assert(len != -1);
-        free(res);
-        res = newres;
-        reslen = newlen;
-    }
-
-    len = fwrite(res, sizeof(char), reslen-2, fp);
-    assert(len != -1);
-    len = fwrite("\n\n", sizeof(char), 2, fp);
-    free(res);
-    return len;
-}
 int saveLayerToFile(Layer layer, FILE *fp) {
     int ret;
     float *weights;
-    float *biases;
 
     int layer_s = layer->n;
     int layer_w = layer->w;
@@ -110,12 +87,6 @@ int saveLayerToFile(Layer layer, FILE *fp) {
     ret = fwrite("\n", sizeof(char), 1, fp);
     assert(ret != -1);
     
-    ret = fwrite("# Biases\n", sizeof(char), 9, fp);
-    assert(ret != -1);
-    biases = layer->bias;
-    ret = saveBiasesToFile(biases, layer_s, fp); 
-    assert(ret != -1);
-
     return 0;
 }
 void saveToFile(Model model, const char *filepath) {

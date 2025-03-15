@@ -1,9 +1,9 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "../../include/neuralnet/model.h"
-#include "../../include/neuralnet/layer.h"
-#include "../../include/neuralnet/ForwardPass.h"
+#include "neuralnet/model.h"
+#include "neuralnet/layer.h"
+#include "neuralnet/ForwardPass.h"
 
 
 // Fonction d'initialisation d'un neurone pour un pixel donné 
@@ -24,7 +24,7 @@ void initRandomInputs(float *inputs, int size) {
 // Fonction de transfert (tangente hyperbolique)
 float activationFunction(float x)
 { 
-    return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
+    return (expf(x) - expf(-x)) / (expf(x) + expf(-x));
 }
 
 

@@ -4,14 +4,13 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include "../../include/codec/nnf.h"
-#include "../../include/neuralnet/model.h"
+#include "codec/nnf.h"
+#include "neuralnet/model.h"
 
 #define COMMENT_CHAR #
 #define MODEL_LAYER_N_STEP 0
 #define LAYER_SIZE_STEP 1
 #define LAYER_WEIGHTS_STEP 2
-#define LAYER_BIAS_STEP 3
 
 int countNonSpaceCharacters(char *src, int size) {
     int n = 0;
@@ -88,24 +87,6 @@ int parseWeights(char *line, float **weights, int n, int w) {
     return 0;
 }
 
-int parseBiases(char *line, float *biases, int n) {
-    float f = 0;
-    int ind = 0;
-    int ret;
-    char *token;
-    token = strtok(line, ",");
-    while(token != NULL) {
-        ret = sscanf(token, "%f", &f);
-        if(ret < 0) {
-            return -1;
-        }
-        biases[ind] = f;
-        token = strtok(NULL, ",");
-        ind++;
-    }
-    return 0;
-}
-
 
 int fromFile(const char *filepath, Model *model) {
     FILE *fp;
@@ -172,7 +153,6 @@ int fromFile(const char *filepath, Model *model) {
                 }
                 curr->neurons = malloc(sizeof(float) * curr->n);
                 curr->weight = malloc(sizeof(float*) * curr->n);
-                curr->bias = malloc(sizeof(float) * curr->n);
                 step=LAYER_WEIGHTS_STEP;
                 break;
             case LAYER_WEIGHTS_STEP:
@@ -182,15 +162,8 @@ int fromFile(const char *filepath, Model *model) {
                 }
                 curr_weight_line++;
                 if(curr_weight_line == curr->n) {
-                    step=LAYER_BIAS_STEP;
+                    step=LAYER_SIZE_STEP;
                 }
-                break;
-            case LAYER_BIAS_STEP:
-                ret = parseBiases(line, curr->bias, curr->n);
-                if(ret < 0) {
-                    break;
-                }
-                step=LAYER_SIZE_STEP;
                 break;
         }
         free(trimmed);
@@ -212,7 +185,6 @@ int fromFile(const char *filepath, Model *model) {
     last->w = 0;
     last->neurons = malloc(sizeof(float) * last->n);
     last->weight = NULL;
-    last->bias = NULL;
     last->previous = curr;
     last->next = NULL;
     curr->next = last;

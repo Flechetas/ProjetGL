@@ -1,22 +1,39 @@
 # TODO
 
-## Types Layer et Model
+## draw
 
- - Ajouter une constructeur qui permet de choisir les valeurs d'entree (notamment le x, y)
- - Ajouter une constructeur permettant de creer une modele avec les premieres valeurs d'entree (le x, y)
+### draw.c *Sebastian*
 
-## 2 - Reseau de neurones
+- Lecture/ecriture fichier
+- Fonction qui prend une matrice de flottants (ou double), et change les couleurs sur la fenetre
 
- - Fonction qui effectue le calcul de la valeur d'un neurone
- - Fonction qui applique ce calcul sur toutes les neurones d'une couche
- - Fonction qui calcule les valeurs de la couche finale etant donnee une modele au depart
+## neuralnet
 
-## Tester le reseau
+### ForwardPass.c *Xavier*
 
- - Fonction qui donne la matrice avec les couleurs des points finales
- - Fonction de comparaison entre resultat et resultat attendu 
+- Finaliser les fonctions
+- Nettoyer le fichier (?)
+- Documenter les fonctions non-documentees
 
-## Divers 
+### backpropagation.c
 
- - Tests unitaires des fonctions existants -> Cedric
- - Documentation des fonctions existants -> Sebastian
+- Envoyer un mail au prof pour le ligne bizarre
+
+**ENLEVER LES BIAIS**
+
+## training *Cedric*
+
+- entrainer le truc
+- effectuer des sauvegardes
+
+## benchmarks *Xavier*
+
+- training, forward pass, backpropagation, ... 
+
+## Generalisation
+
+- On insere n'importe quelles entrees x, y et on observe le resultat.
+
+## Tests unitaires
+
+- Faire des tests sur les fonctions non-basiques (layer.c, model.c, ForwardPass.c *en dernier*)

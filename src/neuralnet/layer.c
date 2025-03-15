@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#include "../../include/neuralnet/layer.h"
+#include "neuralnet/layer.h"
 
 
 float **initRandomWeights(int sizex, int sizey) {
@@ -15,14 +15,6 @@ float **initRandomWeights(int sizex, int sizey) {
         }
     }
     return weights;
-}
-float *initRandomBiases(int size) {
-    srand(time(NULL));
-    float *bias = malloc(sizeof(float) * size);
-    for(int i = 0 ; i < size ; i++) {
-        bias[i] = (float)rand()/(float)RAND_MAX;
-    }
-    return bias;
 }
 Layer createLayerRandom(int size, Layer next) {
     Layer layer = malloc(sizeof(struct layer));
@@ -37,14 +29,12 @@ Layer createLayerRandom(int size, Layer next) {
     }
     layer->w = next->n;
     layer->weight = initRandomWeights(layer->n, layer->w);
-    layer->bias = initRandomBiases(layer->n);
     return layer;
 }
 void freeLayer(Layer layer) {
     int n = layer->n;
     free(layer->neurons);
     if(layer->next != NULL) {
-        free(layer->bias);
         for(int i = 0 ; i < n ; i++) {
             free(layer->weight[i]);
         }
