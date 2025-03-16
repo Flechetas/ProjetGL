@@ -11,7 +11,7 @@ Point *blue_points;
 bool is_init;
 
 // frees the 2 color arrays (to be called at the end of main)
-void freeColors() {
+void freeSpirals() {
     free(red_points);
     free(blue_points);
     is_init = false;

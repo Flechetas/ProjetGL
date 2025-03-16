@@ -6,6 +6,7 @@
 #define COLOR_VALUE_FILE "colorValue.txt"
 
 #include <SDL2/SDL.h>
+#include <stdbool.h>
 
 /**
  * @brief Type that represents a point.
@@ -13,6 +14,16 @@
 typedef struct {
     int x, y; ///> x and y for the points
 } Point;
+
+/**
+ * @brief Function that tells you if the spiral arrays have been initialised
+ */
+bool isInit();
+
+/**
+ * @brief Function that frees the spiral arrays
+ */
+void freeSpirals();
 
 /**
  * @brief Function that creates a spiral scene with the sizes given in config.HAVE_ATOF
