@@ -8,6 +8,7 @@
 
 Point *red_points;
 Point *blue_points;
+int rlen=0, blen=0;
 bool is_init;
 
 // frees the 2 color arrays (to be called at the end of main)
@@ -15,11 +16,28 @@ void freeSpirals() {
     free(red_points);
     free(blue_points);
     is_init = false;
+    rlen=0, blen=0;
 }
 
 bool isInit() {
     return is_init;
 } 
+
+Point *getBluePoints() {
+    return blue_points;
+}
+
+Point *getRedPoints() {
+    return red_points;
+}
+
+int getBlen() {
+    return blen;
+}
+
+int getRlen() {
+    return rlen;
+}
 
 void drawSpiral(SDL_Renderer *renderer) {
 
@@ -40,8 +58,7 @@ void drawSpiral(SDL_Renderer *renderer) {
     SDL_RenderPresent(renderer);
 }
 
-// an auxiliary function for qsort, which has to be written with this format
-int compare_points(const void *a, const void *b) {
+int comparePoints(const void *a, const void *b) {
     const Point *p1 = (const Point*) a;
     const Point *p2 = (const Point*) b;
 
@@ -57,9 +74,8 @@ void initSpiralValues() {
     log_info("Allocation des tableaux...");
     red_points = malloc(sizeof(Point));
     blue_points = malloc(sizeof(Point));
-    int curr_index_b = 0;
-    int curr_index_r = 0;
-
+    int blue_capacity = 0, red_capacity = 0;
+    
     if (red_points == NULL || blue_points == NULL) {
         log_error("Echec d'allocation de tableau");
         exit(EXIT_FAILURE);
@@ -74,12 +90,21 @@ void initSpiralValues() {
 
         if(x < WINDOW_WIDTH && y < WINDOW_HEIGHT) {
             log_trace("Reallocation du tableau...");
-            blue_points = realloc(blue_points, sizeof(Point)*curr_index_b+1);
+            if (blen == blue_capacity){
+                blue_capacity = (blue_capacity == 0) ? 1 : blue_capacity*2;
+
+                Point *hld = realloc(blue_points, sizeof(Point)*blue_capacity);
+                if (hld == NULL) {
+                    log_error("Erreur de reallocation du tableau");
+                    freeSpirals();
+                    exit(EXIT_FAILURE);
+                }
+                blue_points = hld;
+            }            
 
             log_trace("Insertion de la valeur dans le tableau");
-            Point tmp = { .x = x, .y = y };
-            blue_points[curr_index_b] = tmp;
-            curr_index_b++;
+            blue_points[blen] = (Point){ .x = x, .y = y };
+            blen++;
         }
     }
     log_info("Remplissage du tableau effectue avec succes!");
@@ -92,46 +117,53 @@ void initSpiralValues() {
 
         if(x < WINDOW_WIDTH && y < WINDOW_HEIGHT) {
             log_trace("Reallocation du tableau...");
-            red_points = realloc(red_points, sizeof(Point)*curr_index_r+1);
+            if (rlen == red_capacity){
+                red_capacity = (red_capacity == 0) ? 1 : red_capacity*2;
+
+                Point *hld = realloc(red_points, sizeof(Point)*red_capacity);
+                if (hld == NULL) {
+                    log_error("Erreur de reallocation du tableau");
+                    freeSpirals();
+                    exit(EXIT_FAILURE);
+                }
+                red_points = hld;
+            }            
 
             log_trace("Insertion de la valeur dans le tableau");
-            Point tmp = { .x = x, .y = y };
-            red_points[curr_index_r] = tmp;
-            curr_index_r++;
+            red_points[blen] = (Point){ .x = x, .y = y };
+            rlen++;
         }
     }
+    log_trace("Shrinking the arrays to size");
+    blue_points = realloc(blue_points, sizeof(Point)*blen);
+    red_points = realloc(red_points, sizeof(Point)*rlen);
+
     log_info("Remplissage du tableau effectue avec succes!");
 
     log_info("Triage des tableaux");
-    qsort(blue_points, curr_index_b+1, sizeof(Point), compare_points);
-    qsort(red_points, curr_index_r+1, sizeof(Point), compare_points);
+    qsort(blue_points, blen, sizeof(Point), comparePoints);
+    qsort(red_points, rlen, sizeof(Point), comparePoints);
 
     log_info("Initialisation terminee!");
     is_init = true;
 }
 
-int find_nearest(Point myPoint, Point *points) {
-    int len = sizeof(points) / sizeof(Point);
+int find_nearest(Point myPoint, Point *points, int len) {
     int start_index = 0;
     int end_index = len-1;
     
-    int curr;
     int closest = start_index; // just some point in the array
     bool thend = false;
     
-    while (!thend) {
-        // checking whether we're at the end
-        if (start_index == end_index) {
-            thend = true;
-        }
+    while (start_index <= end_index) {
+        int curr = (start_index+end_index)/2;
 
-        // comparing with curr
-        curr = (start_index+end_index)/2;
-        if (compare_points(&myPoint, &points[curr]) == 0) {
+        // exact match found
+        if (distance(myPoint, points[curr]) == 0) {
             closest = curr;
             break;
         }
-        else if (compare_points(&myPoint, &points[curr]) < 0) {
+        else if (comparePoints(&myPoint, &points[curr]) < 0) {
             end_index = curr-1;
         }
         else{
@@ -139,8 +171,17 @@ int find_nearest(Point myPoint, Point *points) {
         }
 
         // checking which is closest
-        if (abs(compare_points(&myPoint, &points[closest])) > abs(compare_points(&myPoint, &points[curr])))
+        if (distance(myPoint, points[closest]) > distance(myPoint, points[curr]))
             closest = curr;
+    }
+
+    // finding the absolute closest in the list, in order to be certain we have the right coordinate
+    for (int i = -2; i <= 2; i++) {
+        int idx = closest+i;
+        if (idx >= 0 && idx < len) { // Ensuring index is valid
+            if (distance(myPoint, points[idx]) < distance(myPoint, points[closest]))
+                closest = idx;
+        }
     }
 
     return closest;
@@ -154,8 +195,8 @@ void determineColor(int px, int py, int *r_out, int *b_out) {
     Point myPoint = { .x = px, .y = py };
 
     log_trace("Recherche des points bleu et rouges les plus proches");
-    int nearest_blue = find_nearest(myPoint, blue_points);
-    int nearest_red = find_nearest(myPoint, red_points);
+    int nearest_blue = find_nearest(myPoint, blue_points, blen);
+    int nearest_red = find_nearest(myPoint, red_points, rlen);
 
     log_trace("Calcul de la distance entre les deux points");
     double dist_blue = distance(myPoint, blue_points[nearest_blue]);
