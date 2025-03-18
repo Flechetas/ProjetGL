@@ -2,7 +2,6 @@
 #include "neuralnet/backpropagation.h"
 #include "neuralnet/ForwardPass.h"
 
-
 float *outputCost(Layer layer, float *expected) {
     int len = layer->n;
     float *actual = layer->neurons;

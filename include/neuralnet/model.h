@@ -23,6 +23,16 @@ typedef struct model {
 Model createModelRandom(int layer_n, ...);
 
 /**
+ * @brief Function that creates a random Model based on the number of layers and the sizes of each layer
+ * @param layer_n The number of layers in the Model
+ * @param layer_sizes An array of size layer_n containing the size of each layer of the model.
+ * @return The new model
+ * 
+ * @note layer_n must correspond with the number of integers that follow
+ */
+Model createModelRandomFromArray(int layer_n, int layer_sizes[]);
+
+/**
  * @brief Frees the resources allocated in the model given as parameter
  * @param model The model in question
  */
