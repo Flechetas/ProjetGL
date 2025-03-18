@@ -67,13 +67,49 @@ void initRandomFloatArray(float *array, int size) {
     }
 }
 
-/**
- * @brief Effectue la propagation sur un réseau de neurones
- * @param model Le model du réseau de neurones
- * @param input Le vecteur d'entrée (valeur des neuronnes d'entrés) // random init ?
- * @return Les valeurs des neurones de la couche de sortie
- */
+// Initialise les neurones d'une couche avec un tableau de valeurs
+void initializeLayerNeurons(Layer layer, float *values) {
+    for (int i = 0; i < layer->n; i++) {
+        layer->neurons[i] = values[i];
+    }
+}
+
+// Effectue la propagation d'une couche à la suivante
+void propagateLayer(Layer current) {
+    if (current->next == NULL) {
+        return;
+    }
+    Layer next = current->next;
+    for (int j = 0; j < next->n; j++) {
+        float sum = 0.0;
+        for (int i = 0; i < current->n; i++) {
+            sum += current->neurons[i] * current->weight[i][j];
+        }
+        next->neurons[j] = activationFunction(sum);
+    }
+}
+
+// Effectue la propagation sur un réseau de neurones
 float* forwardPass(Model model, float *input) {
+    // Affectation des valeurs d'entrée à la couche d'entrée
+    Layer current = model->input;
+    initializeLayerNeurons(current, input);
+    
+    // Propagation vers toutes les couches jusqu'à la couche de sortie
+    while (current->next != NULL) {
+        propagateLayer(current);
+        current = current->next;
+    }
+    
+    // Retourne les valeurs des neurones de la couche de sortie
+    return current->neurons;
+}
+
+
+ // Old version (all in one)
+ /*
+ float* forwardPass(Model model, float *input) {
+   
     // Affectation des valeurs d'entrée à la couche d'entrée
     Layer current = model->input;
     for (int i = 0; i < current->n; i++) {
@@ -94,8 +130,9 @@ float* forwardPass(Model model, float *input) {
             next->neurons[j] = activationFunction(sum);
         }
         current = next;
-    }
+    } 
 
     // Retourne les valeurs des neurones de la couche de sortie
     return current->neurons;
 }
+ */

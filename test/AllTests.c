@@ -3,6 +3,7 @@
 #include "CuTest.h"
 
 CuSuite* CuGetCodecSuite();
+CuSuite* CuGetForwardPassSuite();
 
 void RunAllTests(void)
 {
@@ -10,6 +11,7 @@ void RunAllTests(void)
 	CuSuite* suite = CuSuiteNew();
 
 	CuSuiteAddSuite(suite, CuGetCodecSuite());
+	CuSuiteAddSuite(suite, CuGetForwardPassSuite());
 
 	CuSuiteRun(suite);
 	CuSuiteSummary(suite, output);

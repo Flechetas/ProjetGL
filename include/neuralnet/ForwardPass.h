@@ -30,6 +30,13 @@ float activationFunction(float x); // fonction de tranfert
  */
 void computeNextNeuronValue(Layer currentLayer, int neuronIndex);
 
+/**
+ * @brief Initialise les neurones d'entrée et propage les valeurs vers la première couche cachée.
+ * @param inputLayer La couche d'entrée du réseau de neurones.
+ * @param hiddenLayer La couche cachée qui recevra les valeurs calculées.
+ * @param inputValues Un tableau contenant les valeurs d'entrée.
+ * @param inputSize La taille du tableau d'entrée.
+ */
 void processNeuronLayer(Layer inputLayer, Layer hiddenLayer, float *inputValues, int inputSize);
 
 /**
@@ -40,10 +47,23 @@ void processNeuronLayer(Layer inputLayer, Layer hiddenLayer, float *inputValues,
 void initRandomFloatArray(float *array, int size);
 
 /**
+ * @brief Initialise les neurones d'une couche avec un tableau de valeurs
+ * @param inputLayer La couche d'entrée
+ * @param values Les valeurs des neurones
+ */
+void initializeLayerNeurons(Layer inputLayer, float *values);
+
+/**
+ * @brief Effectue la propagation d'une couche à la suivante
+ * @param current La couche actuelle
+ */
+ void propagateLayer(Layer current);
+
+/**
  * @brief Effectue la propagation sur un réseau de neurones
  * @param model Le model du réseau de neurones
  * @param input Le vecteur d'entrée (valeur des neuronnes d'entrés) // random init ?
- * @return Les valeurs des neurones de la couche de sortie
+ * @return Les valeurs (tableau) des neurones de la couche de sortie
  */
 float* forwardPass(Model model, float *input);
 
