@@ -146,6 +146,7 @@ void TestSpiralInitialisation(CuTest *tc) {
     int rlen = getRlen();
 
     log_info("Ensuring that the blue_points array is well initialised and sorted");
+    log_trace("blen = %d, rlen = %d", blen, rlen);
     CuAssertTrue(tc, blen > 0);
     CuAssertTrue(tc, rlen > 0);
     for (int i = 0; i < blen-1; i++) {
