@@ -148,12 +148,15 @@ void initSpiralValues() {
     is_init = true;
 }
 
+double distance(Point p1, Point p2) {
+    return sqrt(pow(p2.x-p1.x, 2) + pow(p2.y-p1.y, 2));
+}
+
 int find_nearest(Point myPoint, Point *points, int len) {
     int start_index = 0;
     int end_index = len-1;
     
     int closest = start_index; // just some point in the array
-    bool thend = false;
     
     while (start_index <= end_index) {
         int curr = (start_index+end_index)/2;
@@ -185,10 +188,6 @@ int find_nearest(Point myPoint, Point *points, int len) {
     }
 
     return closest;
-}
-
-double distance(Point p1, Point p2) {
-    return sqrt(pow(p2.x-p1.x, 2) + pow(p2.y-p1.y, 2));
 }
 
 void determineColor(int px, int py, int *r_out, int *b_out) {
