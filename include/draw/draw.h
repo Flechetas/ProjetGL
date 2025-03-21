@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL.h>
 #include <stdbool.h>
+#include "neuralnet/model.h"
 
 /*-------------------------------------------------------------------------------
  * ## IMPLEMENTATION NOTES ##                                                    
@@ -71,10 +72,19 @@ int comparePoints(const void* a, const void *b);
  */
 void freeSpirals();
 
+/*-------------------------------------------------------*
+ *  DISPLAY FUNCTIONS                                    *
+ *-------------------------------------------------------*/
+
 /**
  * @brief Function that creates a spiral scene with the sizes given in config.HAVE_ATOF
  */
 int displaySpiral();
+
+/**
+ * @brief Function that displays a screen based on values calculated by the model passed in the save file
+ */
+int displayModel(const char *filename);
 
 /**
  * @brief Function that creates a spiral scene with the sizes given in config.HAVE_ATOF
@@ -105,5 +115,11 @@ void generateColorFile(const char *outputFile);
  * @param renderer Presents the spiral scene
  */
 void drawColoredPoints(SDL_Renderer *renderer, const char *filename);
+
+/**
+ * @brief Presents the result of the points applied to the model
+ * @param render Presents the scene
+ */
+void drawModelResults(SDL_Renderer *renderer, Model model);
 
 #endif // DRAW_H
