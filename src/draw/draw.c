@@ -89,8 +89,8 @@ void initSpiralValues() {
         int y = WINDOW_HEIGHT/2 + t*sin(t*M_PI/180);
 
         if(x < WINDOW_WIDTH && y < WINDOW_HEIGHT) {
-            log_trace("Reallocation du tableau...");
             if (blen == blue_capacity){
+                log_trace("Reallocation du tableau...");
                 blue_capacity = (blue_capacity == 0) ? 1 : blue_capacity*2;
 
                 Point *hld = realloc(blue_points, sizeof(Point)*blue_capacity);
@@ -110,14 +110,14 @@ void initSpiralValues() {
     log_info("Remplissage du tableau effectue avec succes!");
 
     //Spirale rouge
-    log_info("Remplissage du tableau de points bleus...");    
+    log_info("Remplissage du tableau de points rouges...");    
     for (int t = 1; t < WINDOW_WIDTH/sqrt(2); t+=2) {
         int x = WINDOW_WIDTH/2 - t*cos(t*M_PI/180);
         int y = WINDOW_HEIGHT/2 - t*sin(t*M_PI/180);
 
         if(x < WINDOW_WIDTH && y < WINDOW_HEIGHT) {
-            log_trace("Reallocation du tableau...");
             if (rlen == red_capacity){
+                log_trace("Reallocation du tableau...");
                 red_capacity = (red_capacity == 0) ? 1 : red_capacity*2;
 
                 Point *hld = realloc(red_points, sizeof(Point)*red_capacity);
@@ -130,7 +130,7 @@ void initSpiralValues() {
             }            
 
             log_trace("Insertion de la valeur dans le tableau");
-            red_points[blen] = (Point){ .x = x, .y = y };
+            red_points[rlen] = (Point){ .x = x, .y = y };
             rlen++;
         }
     }

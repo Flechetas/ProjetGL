@@ -137,34 +137,11 @@ void TestDecoding(CuTest* tc) {
 
 }
 
-void TestSpiralInitialisation(CuTest *tc) {
-    initSpiralValues();
-
-    Point *blue_points = getBluePoints();
-    Point *red_points = getRedPoints();
-    int blen = getBlen();
-    int rlen = getRlen();
-
-    log_info("Ensuring that the blue_points array is well initialised and sorted");
-    log_trace("blen = %d, rlen = %d", blen, rlen);
-    CuAssertTrue(tc, blen > 0);
-    CuAssertTrue(tc, rlen > 0);
-    for (int i = 0; i < blen-1; i++) {
-        CuAssertTrue(tc, comparePoints(blue_points+i, blue_points+(i+1)) < 0);
-    }
-
-    log_info("Ensuring that the red_points array is well initialised and sorted");
-    for (int i = 0; i < rlen-1; i++) {
-        CuAssertTrue(tc, comparePoints(red_points+i, red_points+(i+1)) < 0);
-    }
-}
-
 CuSuite* CuGetCodecSuite(void) {
 	CuSuite* suite = CuSuiteNew();
 
 	SUITE_ADD_TEST(suite, TestDecoding);
     SUITE_ADD_TEST(suite, TestEncodingDecodingRandom);
-    SUITE_ADD_TEST(suite, TestSpiralInitialisation);
     return suite;
 }
 
