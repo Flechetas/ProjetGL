@@ -8,6 +8,24 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
+/*-------------------------------------------------------------------------------
+ * ## IMPLEMENTATION NOTES ##                                                    
+ *------------------------------------------------------------------------------- 
+ *                                                                                  
+ * Dans le fichier il y a deux tableaux de couleurs : 1 qui represente           
+ * les points bleus, et l'autre qui represente les points rouges.                
+ *                                                                               
+ * Pour initialiser les tableaux, il faut le faire au debut de l'utilisation par
+ *  initSpiralValues()
+ * 
+ * Pour verifier si les tableaux sont initialises, on a la fonction isInit()
+ * 
+ * Pour liberer toutes les ressources a la fin de l'utilisation, il faut appeler
+ * la fonction freeSpirals
+ *                                                                                  
+ *-------------------------------------------------------------------------------
+ */
+
 /**
  * @brief Type that represents a point.
  */
