@@ -33,13 +33,11 @@ int trainOnSpiral(Model model, float training_step, int batch_size) {
     float **inputs = malloc(batch_size * sizeof(float *));
     float **expecteds = malloc(batch_size * sizeof(float *));
     for(int i = 0 ; i < batch_size ; i++) {
-        printf("batch step : %d\n", i);
-
-        float x = (rand() % xMax) / (float)xMax;
-        float y = (rand() % yMax) / (float)yMax;
+        float x = rand() % xMax;
+        float y = rand() % yMax;
         inputs[i] = malloc(2 * sizeof(float));
-        inputs[i][0] = x;
-        inputs[i][1] = y;
+        inputs[i][0] = x / (float)xMax;
+        inputs[i][1] = y / (float)yMax;
         
         determineColor(x, y, &r, &b);
         expecteds[i] = malloc(2 * sizeof(float));
