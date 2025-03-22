@@ -87,6 +87,16 @@ int displaySpiral();
 int displayModel(const char *filename);
 
 /**
+ * @brief Creates the window and renderer ready for display
+ */
+int displaySetup();
+
+/**
+ * @brief Destroys the window and the renderer
+ */
+int displayClear();
+
+/**
  * @brief Function that creates a spiral scene with the sizes given in config.HAVE_ATOF
  * @param renderer Presents the spiral scene
  */
@@ -120,6 +130,6 @@ void drawColoredPoints(SDL_Renderer *renderer, const char *filename);
  * @brief Presents the result of the points applied to the model
  * @param render Presents the scene
  */
-void drawModelResults(SDL_Renderer *renderer, Model model);
+void drawModelResults(Model model);
 
 #endif // DRAW_H

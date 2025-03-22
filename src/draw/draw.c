@@ -251,34 +251,4 @@ void drawColoredPoints(SDL_Renderer *renderer, const char *filename) {
     SDL_RenderPresent(renderer);
 }
 
-void drawModelResults(SDL_Renderer *renderer, Model model) {
-    log_trace("Initialising input array");
-    float *inputs = malloc(sizeof(float)*2);
 
-    if (inputs == NULL) {
-        log_fatal("Erreur d'allocation");
-        exit(EXIT_FAILURE);
-    }
-    
-    float xMax = WINDOW_WIDTH;
-    float yMax = WINDOW_HEIGHT;
-    for (int i = 0; i < WINDOW_HEIGHT; i++) {
-        for (int j = 0; j < WINDOW_WIDTH; j++) {
-            inputs[0] = (float)i / xMax;
-            inputs[1] = (float)j / yMax;
-            log_debug("Current input values: x = %f, y = %f", inputs[0], inputs[1]);
-
-            log_trace("Starting forward pass");
-            float *res = forwardPass(model, inputs);
-
-            log_trace("Drawing point (%d, %d)...", i, j);
-            SDL_SetRenderDrawColor(renderer, (int)(res[1]*255), 0, (int)(res[0]*255), SDL_ALPHA_OPAQUE);
-            SDL_RenderDrawPoint(renderer, i, j);
-        }
-    }
-
-    SDL_RenderPresent(renderer);
-
-    log_trace("Freeing resources");
-    free(inputs);
-}
