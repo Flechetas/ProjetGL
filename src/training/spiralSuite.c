@@ -15,23 +15,6 @@ int trainOnSpiral(Model model, float training_step, int batch_size) {
     printf("Start training on spiral suite.\n");
     printf("training_step : %f | batch_size : %d\n", training_step, batch_size);
     
-    // // If there is no precomputed spiral file...
-    // if(access(SPIRAL_VALUE_FILE, F_OK) != 0) {
-    //     printf("Generating spiral values...\n");
-    //     computeSpiralValues(SPIRAL_VALUE_FILE);
-    //     printf("Generation complete.\n");
-    // } else {
-    //     printf("Cached spiral values found.\n"); 
-    // }
-    // 
-    // // If there is not precomputed color file...
-    // if(access(COLOR_VALUE_FILE, F_OK) != 0) {
-    //     printf("Generating color values...\n");
-    //     generateColorFile(COLOR_VALUE_FILE);
-    //     printf("Generation complete\n");
-    // } else {
-    //     printf("Cached color values found.\n");
-    // }
     if (!isInit()) {
         log_trace("Initialising spiral values...\n");
         initSpiralValues();
@@ -43,13 +26,14 @@ int trainOnSpiral(Model model, float training_step, int batch_size) {
 
     log_trace("Precomputing training values...\n");
     srand(time(NULL));
+    int r;
+    int b;
+    int xMax = WINDOW_WIDTH;
+    int yMax = WINDOW_HEIGHT;
     float **inputs = malloc(batch_size * sizeof(float *));
     float **expecteds = malloc(batch_size * sizeof(float *));
     for(int i = 0 ; i < batch_size ; i++) {
         printf("batch step : %d\n", i);
-
-        int xMax = WINDOW_WIDTH;
-        int yMax = WINDOW_HEIGHT;
 
         float x = (rand() % xMax) / (float)xMax;
         float y = (rand() % yMax) / (float)yMax;
@@ -57,8 +41,6 @@ int trainOnSpiral(Model model, float training_step, int batch_size) {
         inputs[i][0] = x;
         inputs[i][1] = y;
         
-        int r;
-        int b;
         determineColor(x, y, &r, &b);
         expecteds[i] = malloc(2 * sizeof(float));
         if(r > b) {
