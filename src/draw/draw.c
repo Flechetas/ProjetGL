@@ -260,10 +260,12 @@ void drawModelResults(SDL_Renderer *renderer, Model model) {
         exit(EXIT_FAILURE);
     }
     
+    float xMax = WINDOW_WIDTH;
+    float yMax = WINDOW_HEIGHT;
     for (int i = 0; i < WINDOW_HEIGHT; i++) {
         for (int j = 0; j < WINDOW_WIDTH; j++) {
-            inputs[0] = (float)i;
-            inputs[1] = (float)j;
+            inputs[0] = (float)i / xMax;
+            inputs[1] = (float)j / yMax;
             log_debug("Current input values: x = %f, y = %f", inputs[0], inputs[1]);
 
             log_trace("Starting forward pass");

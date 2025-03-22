@@ -34,7 +34,6 @@ int displaySpiral() {
 
     drawSpiral(renderer);
     
-    SDL_RenderPresent(renderer);
     SDL_Delay(5000);
 
     SDL_DestroyRenderer(renderer);
@@ -76,7 +75,6 @@ int displayModel(const char *filename) {
     drawModelResults(renderer, model);
     freeModel(model);
     
-    SDL_RenderPresent(renderer);
     SDL_Delay(60000);
 
     SDL_DestroyRenderer(renderer);
