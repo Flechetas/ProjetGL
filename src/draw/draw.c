@@ -272,7 +272,7 @@ void drawModelResults(SDL_Renderer *renderer, Model model) {
             float *res = forwardPass(model, inputs);
 
             log_trace("Drawing point (%d, %d)...", i, j);
-            SDL_SetRenderDrawColor(renderer, (int)res[1]*255, 0, (int)res[0]*255, SDL_ALPHA_OPAQUE);
+            SDL_SetRenderDrawColor(renderer, (int)(res[1]*255), 0, (int)(res[0]*255), SDL_ALPHA_OPAQUE);
             SDL_RenderDrawPoint(renderer, i, j);
         }
     }
