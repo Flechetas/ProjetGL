@@ -97,6 +97,10 @@ float* forwardPass(Model model, float *input) {
         }
         current = next;
     }
+    // Traitement de la couche sortie
+    for (int i = 0; i < current->n; i++) {
+        current->neurons[i] = (current->neurons[i] + 1) / 2;
+    }
 
     // Retourne les valeurs des neurones de la couche de sortie
     return current->neurons;
