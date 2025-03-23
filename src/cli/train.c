@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
 #include "cli/cli.h"
 #include "codec/nnf.h"
 #include "neuralnet/model.h"

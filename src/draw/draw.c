@@ -2,12 +2,10 @@
 #include <unistd.h>
 #include <math.h>
 #include <SDL2/SDL.h>
+
 #include "config/config.h"
 #include "draw/draw.h"
 #include "log.h"
-#include "neuralnet/model.h"
-#include "neuralnet/layer.h"
-#include "neuralnet/ForwardPass.h"
 
 Point *red_points;
 Point *blue_points;

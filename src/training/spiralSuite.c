@@ -1,12 +1,13 @@
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 #include "training/spiralSuite.h"
 #include "draw/draw.h"
 #include "config/config.h"
 #include "training/training.h"
 #include "log.h"
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
 #define SPIRAL_VALUE_FILE "spiralFile.txt"
 #define COLOR_VALUE_FILE "colorValue.txt"

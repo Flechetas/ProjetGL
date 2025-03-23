@@ -1,8 +1,9 @@
+#include <stdio.h>
+
 #include "training/training.h"
 #include "neuralnet/backpropagation.h"
 #include "neuralnet/model.h"
 #include "draw/draw.h"
-#include <stdio.h>
 
 #define DISPLAY_STEP 100
 

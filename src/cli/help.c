@@ -1,7 +1,8 @@
-#include "cli/cli.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#include "cli/cli.h"
 
 
 char *commands[] = {
