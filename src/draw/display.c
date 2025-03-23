@@ -33,13 +33,12 @@ bool display_init = false;
         for (int j = 0; j < WINDOW_WIDTH; j++) {
             inputs[0] = (float)i / xMax;
             inputs[1] = (float)j / yMax;
-            log_debug("Current input values: x = %f, y = %f", inputs[0], inputs[1]);
 
             log_trace("Starting forward pass");
             float *res = forwardPass(model, inputs);
 
             log_trace("Drawing point (%d, %d)...", i, j);
-            SDL_SetRenderDrawColor(the_renderer, (int)(res[1]*255), 0, (int)(res[0]*255), SDL_ALPHA_OPAQUE);
+            SDL_SetRenderDrawColor(the_renderer, (int)(res[0]*255), 0, (int)(res[1]*255), SDL_ALPHA_OPAQUE);
             SDL_RenderDrawPoint(the_renderer, j, i);
         }
     }
@@ -48,6 +47,31 @@ bool display_init = false;
 
     log_trace("Freeing resources");
     free(inputs);
+}
+
+void drawSpiralFull() {
+    if (!display_init) {
+        log_fatal("Window et renderer non initialisees");
+        exit(EXIT_FAILURE);
+    }
+
+    log_trace("Initialising spiral values");
+    initSpiralValues();
+
+    log_trace("Calculating point values");
+    int r = 0, b = 0;
+    for (int i = 0; i < WINDOW_WIDTH; i++) {
+        for (int j = 0; j < WINDOW_HEIGHT; j++) {
+            determineColor(i, j, &r, &b);
+            
+            SDL_SetRenderDrawColor(the_renderer, r, 0, b, SDL_ALPHA_OPAQUE);
+            SDL_RenderDrawPoint(the_renderer, i, j);
+        }
+    }
+
+    log_trace("Presenting and freeing");
+    SDL_RenderPresent(the_renderer);
+    freeSpirals();
 }
 
 /*------------------------------------------------------------------------*
@@ -113,7 +137,7 @@ bool display_isInit() {
 
 int displaySpiral() {
     displaySetup();
-    drawSpiral(the_renderer);
+    drawSpiralFull();
     displayClear();
     
     return 0;
