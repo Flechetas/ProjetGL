@@ -29,5 +29,6 @@ int main() {
     
     benchmarkForwardPass(iterations, nb_layer, input_size, hidden_size, output_size);
     benchmarkBackpropagation(iterations, nb_layer, input_size, hidden_size, output_size, training_step);
+    
     return 0;
 }
