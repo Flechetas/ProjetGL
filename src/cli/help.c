@@ -56,6 +56,7 @@ int displayHelp(int argc, char *argv[]) {
         }
         printf("  ");
         printf("%s", descriptions[i]);
+        free(cmd);
     }
     printf("\n\nRun 'COMMAND --help' for more information on a command.\n\n");
 

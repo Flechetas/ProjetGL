@@ -41,5 +41,8 @@ int generate(int argc, char *argv[]) {
     saveToFile(model, output_file);
     printf("Saved to %s.\n", output_file);
 
+    free(sizes);
+    freeModel(model);
+
     return 0;
 }

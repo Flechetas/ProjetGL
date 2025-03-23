@@ -60,5 +60,12 @@ int trainOnSpiral(Model model, float training_step, int batch_size) {
     }
     log_trace("Training complete.\n");
 
+    for(int i = 0 ; i < batch_size ; i++) {
+        free(inputs[i]);
+        free(expecteds[i]);
+    }
+    free(inputs);
+    free(expecteds);
+
     return 0;
 }
