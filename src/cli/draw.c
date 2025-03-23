@@ -3,19 +3,30 @@
 #include "log.h"
 #include "draw/draw.h"
 
+int displayDrawHelp() {
+    printf("\nDescription: displays the given figure\n");
+    printf("Usage: draw <figure>\n\n");
+    printf("Accepted figures:\n");
+    printf("  Spiral\n");
+    printf("  Model <filename.nnf>\n\n");
+    return 0;
+}
+
 int draw(int argc, char *argv[]) {
     if(argc < 3) {
-        log_error("Please specify which figure to draw.\nAccepted figures :\n- Spiral\n- Model <filename>");
+        log_error("Please specify which figure to draw.\nUse 'draw --help' to display help");
         return 1;
     }
-    
+
+    if(strcmp(argv[2], "--help") == 0) {
+        return displayDrawHelp(); 
+    }
     if(strcmp(argv[2], "Spiral") == 0) {
         return displaySpiral();
     }
-
     if (strcmp(argv[2], "Model") == 0) {
         if (argc < 4) {
-            log_error("Please specify input file for the model");
+            log_error("Please specify input file for the model\nUse 'draw --help' to display help");
             return 1;
         }
 
@@ -23,6 +34,6 @@ int draw(int argc, char *argv[]) {
     }
     
     // If no figure matches
-    log_error("Figure %s doesn't match any current figure.\nAccepted figures :\n- Spiral", argv[2]);
+    log_error("Figure %s doesn't match any current figure.\nUse 'draw --help' to display help", argv[2]);
     return 1;
 }

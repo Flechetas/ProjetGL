@@ -1,9 +1,22 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "cli/cli.h"
 #include "codec/nnf.h"
 
+int displayGenerateHelp() {
+    printf("\nDescription: Generates a new random model with given layer sizes\n");
+    printf("Usage: generate n1 n2 ... nk <filename.nnf>\n\n");
+    printf("Example :\n");
+    printf("  generate 2 10 10 2 model.nnf\n");
+    printf("  generate 5 100 200 2 output.nnf\n\n");
+    return 0;
+}
+
 int generate(int argc, char *argv[]) {
+    if(argc == 3 && strcmp(argv[2], "--help") == 0) {
+        return displayGenerateHelp(); 
+    }
     char *output_file = argv[argc-1];
     if(endsWith(output_file, ".nnf") != 0) {
         printf("Invalid output file %s. Output file must have extension .nnf\n", argv[argc-1]);

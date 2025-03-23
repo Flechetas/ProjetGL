@@ -12,6 +12,17 @@
 #define INPUT_FILE ""
 #define OUTPUT_FILE "output.nnf"
 
+int displayTrainHelp() {
+    printf("\nDescription: Trains the given model using the spiral data. The input and output layer have to be of size 2\n");
+    printf("Usage: train --input <filename.nnf> [options] <output.nnf>\n\n");
+    printf("Options :\n");
+    printf(" --input <filename.nnf> : the input model file name\n");
+    printf(" --batch <int> : the training dataset size\n");
+    printf(" --step <float> : the amount of change of each training step\n");
+    printf(" <output.nnf> : the output file name\n\n");
+    return 0;
+}
+
 /*
  * train
  * --input <filepath>
@@ -20,6 +31,9 @@
  *  <output_path>
  */
 int execTrain(int argc, char *argv[]) {
+    if(argc == 3 && strcmp(argv[2], "--help") == 0) {
+        return displayTrainHelp(); 
+    }
     int batch_size = BATCH_SIZE;
     float training_step = TRAINING_STEP;
     char *input_file = INPUT_FILE;
@@ -79,7 +93,7 @@ int execTrain(int argc, char *argv[]) {
     }
 
     if(access(input_file, F_OK) != 0) {
-        printf("Input file %s does not exist.", input_file);
+        printf("Input file %s does not exist.\n", input_file);
     }
     ret = fromFile(input_file, &model);
     if(ret != 0) {
