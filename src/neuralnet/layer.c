@@ -11,7 +11,9 @@ float **initRandomWeights(int sizex, int sizey) {
     for(int i = 0 ; i < sizex ; i++) {
         weights[i] = malloc(sizeof(float) * sizey);
         for(int j = 0 ; j < sizey ; j++) {
-            weights[i][j] = (float)rand()/(float)RAND_MAX;
+            // Random float €[-1,1]
+            float w = (float)rand()/(float)RAND_MAX*2-1;
+            weights[i][j] = w;
         }
     }
     return weights;

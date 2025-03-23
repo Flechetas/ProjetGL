@@ -3,7 +3,7 @@ CC = gcc
 MKDIR = mkdir -p
 RM = rm -f
 RMDIR = rm -rf
-CFLAGS = -Wall -I/usr/include/SDL2 -Iinclude -D_REENTRANT
+CFLAGS = -Wall -I/usr/include/SDL2 -Iinclude -D_REENTRANT -DLOG_USE_COLOR
 LDFLAGS = -lSDL2 -lm
 
 SRC_DIR = src

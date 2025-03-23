@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
 #include "neuralnet/model.h"
 #include "neuralnet/layer.h"
 #include "neuralnet/ForwardPass.h"
@@ -23,8 +24,8 @@ void initRandomInputs(float *inputs, int size) {
 
 // Fonction de transfert (tangente hyperbolique)
 float activationFunction(float x)
-{ 
-    return (expf(x) - expf(-x)) / (expf(x) + expf(-x));
+{
+    return tanhf(x);
 }
 
 

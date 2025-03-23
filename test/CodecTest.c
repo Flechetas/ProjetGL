@@ -5,6 +5,8 @@
 #include "codec/nnf.h"
 #include "neuralnet/model.h"
 #include "CuTest.h"
+#include "draw/draw.h"
+#include "log.h"
 
 
 int equals(float a, float b) {
@@ -134,7 +136,6 @@ void TestDecoding(CuTest* tc) {
     remove(testFileName);
 
 }
-
 
 CuSuite* CuGetCodecSuite(void) {
 	CuSuite* suite = CuSuiteNew();

@@ -1,41 +1,133 @@
 #include "draw/draw.h"
 #include "config/config.h"
+#include "neuralnet/model.h"
+#include "neuralnet/ForwardPass.h"
+#include "codec/nnf.h"
+#include "log.h"
 
-int displaySpiral() {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        printf("Erreur SDL_Init: %s\n", SDL_GetError());
+SDL_Window *the_window = NULL;
+SDL_Renderer *the_renderer = NULL;
+bool display_init = false;
+
+/*-------------------------------------------------------------*
+ *        DRAW FUNCTIONS                                       *
+ *-------------------------------------------------------------*/
+
+ void drawModelResults(Model model) {
+    if (!display_init) {
+        log_fatal("Window et renderer non initialisees");
+        exit(EXIT_FAILURE);
+    }
+
+    log_trace("Initialising input array");
+    float *inputs = malloc(sizeof(float)*2);
+
+    if (inputs == NULL) {
+        log_fatal("Erreur d'allocation");
+        exit(EXIT_FAILURE);
+    }
+    
+    float xMax = WINDOW_WIDTH;
+    float yMax = WINDOW_HEIGHT;
+    for (int i = 0; i < WINDOW_HEIGHT; i++) {
+        for (int j = 0; j < WINDOW_WIDTH; j++) {
+            inputs[0] = (float)i / xMax;
+            inputs[1] = (float)j / yMax;
+            log_debug("Current input values: x = %f, y = %f", inputs[0], inputs[1]);
+
+            log_trace("Starting forward pass");
+            float *res = forwardPass(model, inputs);
+
+            log_trace("Drawing point (%d, %d)...", i, j);
+            SDL_SetRenderDrawColor(the_renderer, (int)(res[1]*255), 0, (int)(res[0]*255), SDL_ALPHA_OPAQUE);
+            SDL_RenderDrawPoint(the_renderer, j, i);
+        }
+    }
+
+    SDL_RenderPresent(the_renderer);
+
+    log_trace("Freeing resources");
+    free(inputs);
+}
+
+/*------------------------------------------------------------------------*
+ *          DISPLAY INITIALISATION AND CLEARING                           *
+ *------------------------------------------------------------------------*/
+
+int displaySetup() {
+    if (display_init) {
+        log_error("Display already initialised");
         return 1;
     }
 
-    SDL_Window *window = SDL_CreateWindow("Coloration par Distance",
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        log_fatal("Erreur SDL_Init: %s\n", SDL_GetError());
+        return 1;
+    }
+
+    the_window = SDL_CreateWindow("Coloration par Distance",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
                                           WINDOW_WIDTH, WINDOW_HEIGHT,
                                           SDL_WINDOW_RESIZABLE);
-    if (!window) {
-        printf("Erreur SDL_CreateWindow: %s\n", SDL_GetError());
+    if (!the_window) {
+        log_fatal("Erreur SDL_CreateWindow: %s\n", SDL_GetError());
         SDL_Quit();
         return 1;
     }
 
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) {
-        printf("Erreur SDL_CreateRenderer: %s\n", SDL_GetError());
-        SDL_DestroyWindow(window);
+    the_renderer = SDL_CreateRenderer(the_window, -1, SDL_RENDERER_ACCELERATED);
+    if (!the_renderer) {
+        log_fatal("Erreur SDL_CreateRenderer: %s\n", SDL_GetError());
+        SDL_DestroyWindow(the_window);
         SDL_Quit();
         return 1;
     }
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(the_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(the_renderer);
+    display_init = true;
 
-    drawSpiral(renderer);
-    
-    SDL_RenderPresent(renderer);
+    return 0;
+}
+
+int displayClear() {
+    // A brief delay
     SDL_Delay(5000);
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(the_renderer);
+    SDL_DestroyWindow(the_window);
     SDL_Quit();
+    display_init = false;
+
+    return 0;
+}
+
+bool display_isInit() {
+    return display_init;
+}
+
+/*--------------------------------------------------------------------------------*
+ *          DISPLAY SHOWING OPTIONS                                               *
+ *--------------------------------------------------------------------------------*/
+
+int displaySpiral() {
+    displaySetup();
+    drawSpiral(the_renderer);
+    displayClear();
+    
+    return 0;
+}
+
+int displayModel(const char *filename) {
+    displaySetup();
+    
+    Model model;
+    fromFile(filename, &model);
+    drawModelResults(model);
+    freeModel(model);
+    
+    displayClear();
+
     return 0;
 }
