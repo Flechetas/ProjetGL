@@ -78,11 +78,15 @@ void benchmarkAccuracyPoints(Model model, int output_size){
     
     //initSpiralValues(); 
 
+    int xMax = WINDOW_WIDTH;
+    int yMax = WINDOW_HEIGHT;
+
     Point *red_points = getRedPoints();
     Point *blue_points = getBluePoints();
     int red_count = getRlen();
     int blue_count = getBlen();
-
+    printf("red_count = %d\n", red_count);
+    printf("blue_count = %d\n", blue_count);
     int correctSpi = 0;
     int total = red_count + blue_count;
 
@@ -90,8 +94,8 @@ void benchmarkAccuracyPoints(Model model, int output_size){
     // points rouges
     for (int i = 0; i < red_count; i++) {
         float input[2];
-        input[0] = ((float)red_points[i].x / (WINDOW_WIDTH / 2.0)) - 1.0;
-        input[1] = ((float)red_points[i].y / (WINDOW_HEIGHT / 2.0)) - 1.0;
+        input[0] = ((float)red_points[i].x / (float)xMax);
+        input[1] = ((float)red_points[i].y / (float)yMax);
 
         float *prediction = forwardPass(model, input);
         int predicted_class = getMaxIndex(prediction, output_size);
@@ -108,8 +112,8 @@ void benchmarkAccuracyPoints(Model model, int output_size){
     // points bleus
     for (int i = 0; i < blue_count; i++) {
         float input[2];
-        input[0] = ((float)blue_points[i].x / (WINDOW_WIDTH / 2.0f)) - 1.0;
-        input[1] = ((float)blue_points[i].y / (WINDOW_HEIGHT / 2.0f)) - 1.0;
+        input[0] = ((float)blue_points[i].x / (float)xMax);
+        input[1] = ((float)blue_points[i].y / (float)yMax);
 
         float *prediction = forwardPass(model, input);
         int predicted_class = getMaxIndex(prediction, output_size);
@@ -131,14 +135,17 @@ void benchmarkAccuracyPoints(Model model, int output_size){
 }
 
 void benchmarkAccuracyDetermineColor(Model model, float **inputs, int nb_samples, int output_size){
+
+    int xMax = WINDOW_WIDTH;
+    int yMax = WINDOW_HEIGHT;
+
     int correctDC = 0;
     for (int i = 0; i < nb_samples; i++) {
 
         float *prediction = forwardPass(model, inputs[i]);
         int predicted_index = getMaxIndex(prediction, output_size);
-
-        int px = (int)((inputs[i][0] + 1.0) * (WINDOW_WIDTH / 2.0));
-        int py = (int)((inputs[i][1] + 1.0) * (WINDOW_HEIGHT / 2.0));
+        int px = (int)((inputs[i][0]) * (float)xMax);
+        int py = (int)((inputs[i][1]) * (float)yMax);
 
         int r, b;
         determineColor(px, py, &r, &b);
