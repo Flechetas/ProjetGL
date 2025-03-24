@@ -24,7 +24,7 @@ void benchmarkAccuracyBRUT(Model model, float **inputs, float **expected_outputs
 /**  
 * @brief Calcule la précision d’un modèle en comparant les sorties prédites avec les points en dures de la spirale
 */
-void benchmarkAccuracyPoints(Model model, float **expected_outputs, int output_size);
+void benchmarkAccuracyPoints(Model model, int output_size);
 
 /**  
 * @brief Calcule la précision d’un modèle en comparant les sorties prédites et les sorties attendues par DetermineColor
@@ -34,6 +34,6 @@ void benchmarkAccuracyDetermineColor(Model model, float **inputs, int nb_samples
 /**  
 * @brief Benchmark global qui appelle les 3 fonctions d'accuracy et le temps pris par l'entrainement
 */
-void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float **expected_outputs, int output_size, clock_t start, clock_t end) ;
+void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float **expected_outputs, int output_size, clock_t start, clock_t end);
 
 #endif

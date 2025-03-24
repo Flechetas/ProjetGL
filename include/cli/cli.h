@@ -41,6 +41,14 @@ int generate(int argc, char *argv[]);
  */
 int displayHelp(int argc, char *argv[]);
 
+/**
+    * @brief parses the benchmark command
+    * @param argc number of arguments
+    * @param argv arguments
+    * @return 0 on success, error code otherwise
+ */
+int benchmark_execTrain(int argc, char *argv[]);
+
 /*
  * @brief check if string has suffix suff
  * @param string source string

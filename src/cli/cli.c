@@ -26,6 +26,9 @@ int exec(int argc, char *argv[]) {
     if(strcmp(arg, "generate") == 0) {
         return generate(argc, argv);
     }
+    if(strcmp(arg, "benchmark") == 0) {
+        return benchmark_execTrain(argc, argv);
+    }
 
     return 0;
 }

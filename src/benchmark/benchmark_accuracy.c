@@ -74,9 +74,9 @@ void benchmarkAccuracyBRUT(Model model, float **inputs, float **expected_outputs
 
 }
 
-void benchmarkAccuracyPoints(Model model, float **expected_outputs, int output_size){
+void benchmarkAccuracyPoints(Model model, int output_size){
     
-    initSpiralValues(); 
+    //initSpiralValues(); 
 
     Point *red_points = getRedPoints();
     Point *blue_points = getBluePoints();
@@ -93,17 +93,16 @@ void benchmarkAccuracyPoints(Model model, float **expected_outputs, int output_s
         input[0] = ((float)red_points[i].x / (WINDOW_WIDTH / 2.0)) - 1.0;
         input[1] = ((float)red_points[i].y / (WINDOW_HEIGHT / 2.0)) - 1.0;
 
-        //float *prediction = forwardPass(model, input);
-        float *prediction = getOutputValues(model);
+        float *prediction = forwardPass(model, input);
         int predicted_class = getMaxIndex(prediction, output_size);
 
         if (predicted_class == 0) correctSpi++; 
 
         //DEBUG
-        if ((i + 1) % 50000 == 0) {
+        /*if ((i + 1) % 50000 == 0) {
             printf("Pause à l'exemple %d. Appuyez sur Entrée pour continuer...\n", i + 1);
             getchar(); 
-        }
+        }*/
     }
 
     // points bleus
@@ -112,17 +111,16 @@ void benchmarkAccuracyPoints(Model model, float **expected_outputs, int output_s
         input[0] = ((float)blue_points[i].x / (WINDOW_WIDTH / 2.0f)) - 1.0;
         input[1] = ((float)blue_points[i].y / (WINDOW_HEIGHT / 2.0f)) - 1.0;
 
-        //float *prediction = forwardPass(model, input);
-        float *prediction = getOutputValues(model);
+        float *prediction = forwardPass(model, input);
         int predicted_class = getMaxIndex(prediction, output_size);
 
         if (predicted_class == 1) correctSpi++; 
 
         //DEBUG
-        if ((i + 1) % 50000 == 0) {
+        /*if ((i + 1) % 50000 == 0) {
             printf("Pause à l'exemple %d. Appuyez sur Entrée pour continuer...\n", i + 1);
             getchar(); 
-        }
+        }*/
     }
 
     float accuracySpi = (float)correctSpi / total;
@@ -136,8 +134,7 @@ void benchmarkAccuracyDetermineColor(Model model, float **inputs, int nb_samples
     int correctDC = 0;
     for (int i = 0; i < nb_samples; i++) {
 
-        //float *prediction = forwardPass(model, inputs[i]);
-        float *prediction = getOutputValues(model);
+        float *prediction = forwardPass(model, inputs[i]);
         int predicted_index = getMaxIndex(prediction, output_size);
 
         int px = (int)((inputs[i][0] + 1.0) * (WINDOW_WIDTH / 2.0));
@@ -157,10 +154,10 @@ void benchmarkAccuracyDetermineColor(Model model, float **inputs, int nb_samples
             correctDC++;
         }
         //DEBUG
-        if ((i + 1) % 50000 == 0) {
+        /*if ((i + 1) % 50000 == 0) {
             printf("Pause à l'exemple %d. Appuyez sur Entrée pour continuer...\n", i + 1);
             getchar(); 
-        }
+        }*/
     }
     float accuracyDC = (float)correctDC / nb_samples;
 
@@ -172,7 +169,7 @@ void benchmarkAccuracyDetermineColor(Model model, float **inputs, int nb_samples
 void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float **expected_outputs, int output_size, clock_t start, clock_t end) {
 
     // Accuracy par points 
-    benchmarkAccuracyPoints(model, expected_outputs, output_size);
+    benchmarkAccuracyPoints(model, output_size);
 
     // Accuracy tab expected
     benchmarkAccuracyBRUT(model, inputs, expected_outputs, nb_samples, output_size);
@@ -183,8 +180,10 @@ void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float
     // Métrique temporel 
     benchmarkTIME(start, end, nb_samples);
 
-    /*
+    /* // Recap affichage
+
     // métrique précision
+
     printf("=== Résultat du benchmark (précision avec tableau de points) ===\n");
     printf("Corrects : %d / %d (nb points)\n", correctSpi, total);
     printf("Précision : %.2f%%\n", accuracySpi * 100.0);
@@ -198,10 +197,6 @@ void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float
     printf("Précision : %.2f%%\n", accuracyDC * 100.0);
 
     // métrique temps
-    double total_time = (double)(end - start) / CLOCKS_PER_SEC;
-    double avg_time = total_time / nb_samples * 1000.0;
-    int minutes = (int)(total_time / 60);
-    double seconds = total_time - minutes * 60;
 
     printf("=== Résultat du benchmark (temps) ===\n");
     printf("Temps total : %d min %.2f sec\n", minutes, seconds);
