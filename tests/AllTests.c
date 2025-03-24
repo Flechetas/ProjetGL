@@ -4,6 +4,7 @@
 #include "log.h"
 
 CuSuite* CuGetCodecSuite();
+CuSuite* CuGetForwardPassSuite();
 CuSuite* CuGetDrawSuite();
 
 void RunAllTests(void)
@@ -14,6 +15,7 @@ void RunAllTests(void)
 	CuSuite* suite = CuSuiteNew();
 
 	CuSuiteAddSuite(suite, CuGetCodecSuite());
+	CuSuiteAddSuite(suite, CuGetForwardPassSuite());
 	CuSuiteAddSuite(suite, CuGetDrawSuite());
 
 	CuSuiteRun(suite);
