@@ -108,8 +108,6 @@ int execTrain(int argc, char *argv[]) {
 
     saveToFile(model, output_file);
 
-    free(input_file);
-    free(output_file);
     freeModel(model);
 
     return 0;    
