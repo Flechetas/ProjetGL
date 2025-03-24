@@ -8,7 +8,7 @@
 #include "config/config.h"
 #include "training/training.h"
 #include "log.h"
-#include "benchmark/benchmark_accuracy.h"
+#include "benchmark/benchmark_function.h"
 
 #define SPIRAL_VALUE_FILE "spiralFile.txt"
 #define COLOR_VALUE_FILE "colorValue.txt"

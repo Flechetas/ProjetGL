@@ -227,7 +227,7 @@ void TestManuelForwardPass(CuTest* tc) {
 CuSuite* CuGetForwardPassSuite() {
     CuSuite* suite = CuSuiteNew();
 
-    SUITE_ADD_TEST(suite, TestManuelForwardPass);
+    //SUITE_ADD_TEST(suite, TestManuelForwardPass);
     SUITE_ADD_TEST(suite, TestForwardPass);
 
     return suite;

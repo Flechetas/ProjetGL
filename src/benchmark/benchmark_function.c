@@ -4,7 +4,7 @@
 #include <time.h>
 #include "../include/neuralnet/model.h"
 #include "../include/neuralnet/ForwardPass.h"
-#include "../include/benchmark/benchmark_accuracy.h"
+#include "../include/benchmark/benchmark_function.h"
 #include "../include/draw/draw.h"    
 #include "../include/config/config.h"  
 

@@ -1,5 +1,5 @@
-#ifndef BENCHMARK_ACCURACY_H
-#define BENCHMARK_ACCURACY_H
+#ifndef BENCHMARK_FUNCTION_H
+#define BENCHMARK_FUNCTION_H
 
 #include "../neuralnet/model.h"
 
@@ -36,4 +36,4 @@ void benchmarkAccuracyDetermineColor(Model model, float **inputs, int nb_samples
 */
 void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float **expected_outputs, int output_size, clock_t start, clock_t end);
 
-#endif
+#endif // BENCHMARK_FUNCTION_H
