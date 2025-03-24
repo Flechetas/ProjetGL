@@ -50,10 +50,10 @@ $(BUILD_TESTS_SUBDIRS):
 
 tests: check-compiler
 	@echo "Compiling tests ..."
-	$(CC) $(TESTS) $(LDFLAGS) $(CFLAGS) $(LIBS) -o tests
+	$(CC) $(TESTS) $(LDFLAGS) $(CFLAGS) $(LIBS) -o main.test
 	@echo "Test build complete!"
-	@-./tests
-	@rm ./tests
+	@-./main.test
+	@rm ./main.test
 
 docs:
 	@echo "Generating docs..."

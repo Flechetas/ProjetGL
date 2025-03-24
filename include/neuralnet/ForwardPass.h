@@ -2,6 +2,7 @@
 #define FORWARDPASS_H
 
 #include <SDL2/SDL.h>
+
 #include "model.h"
 
 /**

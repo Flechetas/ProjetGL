@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
 #include "cli/cli.h"
 #include "codec/nnf.h"
 #include "neuralnet/model.h"
@@ -12,6 +13,18 @@
 #define INPUT_FILE ""
 #define OUTPUT_FILE "output.nnf"
 
+int displayTrainHelp() {
+    printf("\nDescription: Trains the given model using the spiral data. The input and output layer have to be of size 2\n");
+    printf("Usage: train --input <filename.nnf> [options] <output.nnf>\n\n");
+    printf("Options :\n");
+    printf(" --input <filename.nnf> : the input model file name\n");
+    printf(" --batch <int> : the training dataset size\n");
+    printf(" --step <float> : the amount of change of each training step\n");
+    printf(" --visualise : specifies if the model should be visualized during the training process");
+    printf(" <output.nnf> : the output file name\n\n");
+    return 0;
+}
+
 /*
  * train
  * --input <filepath>
@@ -20,14 +33,22 @@
  *  <output_path>
  */
 int execTrain(int argc, char *argv[]) {
+    if(argc == 3 && strcmp(argv[2], "--help") == 0) {
+        return displayTrainHelp(); 
+    }
     int batch_size = BATCH_SIZE;
     float training_step = TRAINING_STEP;
     char *input_file = INPUT_FILE;
     char *output_file = OUTPUT_FILE;
+    int visualized = 0;
     Model model;
     int ret;
 
     for(int i = 2 ; i < argc ; i++) {
+        if(strcmp(argv[i], "--visualize") == 0) {
+            visualized = 1;
+            continue;
+        }
         if(strcmp(argv[i], "--input") == 0) {
             if(i >= argc-1) {
                 printf("Invalid argument cound.\n");
@@ -79,19 +100,21 @@ int execTrain(int argc, char *argv[]) {
     }
 
     if(access(input_file, F_OK) != 0) {
-        printf("Input file %s does not exist.", input_file);
+        printf("Input file %s does not exist.\n", input_file);
     }
     ret = fromFile(input_file, &model);
     if(ret != 0) {
         return ret;
     }
 
-    ret = trainOnSpiral(model, training_step, batch_size);
+    ret = trainOnSpiral(model, training_step, batch_size, visualized);
     if(ret != 0) {
         return ret;
     }
 
     saveToFile(model, output_file);
+
+    freeModel(model);
 
     return 0;    
 }

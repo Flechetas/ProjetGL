@@ -1,31 +1,51 @@
 # Projet Génie Logiciel - Réseau de neurones
 
-## Dépendances
+## Usage
+
+### Build
+
+```bash
+make
+```
+
+### CLI
+
+```bash
+./build/main help
+```
+
+```bash
+./build/main generate --help
+```
+
+```bash
+./build/main train --help
+```
+
+```bash
+./build/main draw --help
+```
+
+### Dependencies
 
 - SDL2 :
 ```bash
 sudo apt install libsdl2-dev
 ```
 
-## Build and run
-
-```bash
-make
-./build/main
-```
-## Tests
+### Tests
 
 ```bash
 make tests
 ```
-## Docs
+### Docs
 
 ```bash
 make docs
 ```
 Entrypoint is docs/index.html
 
-## Clean
+### Clean
 
 ```bash
 make clean

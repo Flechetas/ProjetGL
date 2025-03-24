@@ -1,20 +1,21 @@
 #include "training/training.h"
 #include "neuralnet/backpropagation.h"
 #include "neuralnet/model.h"
+#include "log.h"
 #include "draw/draw.h"
-#include <stdio.h>
 
-#define DISPLAY_STEP 100
+#define DISPLAY_STEP 20
 
-int train(Model model, float training_step, int batch_size, float **inputs, int input_size, float **expecteds, int expected_size) {
+int train(Model model, float training_step, int batch_size, float **inputs, int input_size, float **expecteds, int expected_size, int visualized) {
     if(firstLayer(model)->n != input_size) {
         return -1;
     }
     if(lastLayer(model)->n != expected_size) {
         return -1;
     }
-    // Preparing visualisation
-    displaySetup();
+    if(visualized) {
+        displaySetup();
+    }
     
     float avg_cost = 0;
     int step = batch_size / DISPLAY_STEP;
@@ -22,13 +23,17 @@ int train(Model model, float training_step, int batch_size, float **inputs, int 
         float cost = backpropagate(model, training_step, inputs[i], expecteds[i]);
         avg_cost += cost;
         if(i % step == 0) {
-            printf("Training step %d | cost : %0.10f\n", i, avg_cost / step);
+            log_info("step %d | cost : %0.10f", i, avg_cost / step);
             avg_cost = 0;
-            drawModelResults(model);
+    
+            if(visualized) {
+                drawModelResults(model);
+            }
         }
     }
-
-    // freeing display info
-    displayClear();
+    
+    if(visualized) {
+        displayClear();
+    }
     return 0;
 }

@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <time.h>
+
 #include "neuralnet/model.h"
 
 
@@ -52,7 +53,7 @@ Model createModelRandomFromArray(int layer_n, int layer_sizes[]) {
         curr = new;
     }
 
-    Model model = malloc(sizeof(struct model *));
+    Model model = malloc(sizeof(struct model));
     model->layer_n = layer_n;
     model->input = curr;
     return model;

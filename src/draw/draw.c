@@ -2,12 +2,10 @@
 #include <unistd.h>
 #include <math.h>
 #include <SDL2/SDL.h>
+
 #include "config/config.h"
 #include "draw/draw.h"
 #include "log.h"
-#include "neuralnet/model.h"
-#include "neuralnet/layer.h"
-#include "neuralnet/ForwardPass.h"
 
 Point *red_points;
 Point *blue_points;
@@ -16,6 +14,11 @@ bool is_init;
 
 // frees the 2 color arrays (to be called at the end of main)
 void freeSpirals() {
+    if (!is_init) {
+        log_error("Tableaux de points non-initialisees");
+        exit(EXIT_FAILURE);
+    }
+
     free(red_points);
     free(blue_points);
     is_init = false;
@@ -27,18 +30,38 @@ bool isInit() {
 } 
 
 Point *getBluePoints() {
+    if (!is_init) {
+        log_error("Tableaux de points non-initialisees");
+        exit(EXIT_FAILURE);
+    }
+
     return blue_points;
 }
 
 Point *getRedPoints() {
+    if (!is_init) {
+        log_error("Tableaux de points non-initialisees");
+        exit(EXIT_FAILURE);
+    }
+
     return red_points;
 }
 
 int getBlen() {
+    if (!is_init) {
+        log_error("Tableaux de points non-initialisees");
+        exit(EXIT_FAILURE);
+    }
+
     return blen;
 }
 
 int getRlen() {
+    if (!is_init) {
+        log_error("Tableaux de points non-initialisees");
+        exit(EXIT_FAILURE);
+    }
+
     return rlen;
 }
 
@@ -61,17 +84,12 @@ void drawSpiral(SDL_Renderer *renderer) {
     SDL_RenderPresent(renderer);
 }
 
-int comparePoints(const void *a, const void *b) {
-    const Point *p1 = (const Point*) a;
-    const Point *p2 = (const Point*) b;
-
-    if (p1->x != p2->x) {
-        return p1->x - p2->x;
-    }
-    return p1->y - p2->y;
-}
-
 void initSpiralValues() {
+    if (is_init) {
+        log_error("Tableaux de points deja initialisees");
+        exit(EXIT_FAILURE);
+    }
+    
     log_info("Initialisation des tableaux de points des spirales...");
     
     log_info("Allocation des tableaux...");
@@ -140,12 +158,7 @@ void initSpiralValues() {
     log_trace("Shrinking the arrays to size");
     blue_points = realloc(blue_points, sizeof(Point)*blen);
     red_points = realloc(red_points, sizeof(Point)*rlen);
-
     log_info("Remplissage du tableau effectue avec succes!");
-
-    log_info("Triage des tableaux");
-    qsort(blue_points, blen, sizeof(Point), comparePoints);
-    qsort(red_points, rlen, sizeof(Point), comparePoints);
 
     log_info("Initialisation terminee!");
     is_init = true;
@@ -156,37 +169,15 @@ double distance(Point p1, Point p2) {
 }
 
 int find_nearest(Point myPoint, Point *points, int len) {
-    int start_index = 0;
-    int end_index = len-1;
-    
-    int closest = start_index; // just some point in the array
-    
-    while (start_index <= end_index) {
-        int curr = (start_index+end_index)/2;
+    int closest = 0;
 
-        // exact match found
-        if (distance(myPoint, points[curr]) == 0) {
-            closest = curr;
+    for (int i = 1; i < len; i++) {
+        if (distance(myPoint, points[closest]) == 0) {
             break;
         }
-        else if (comparePoints(&myPoint, &points[curr]) < 0) {
-            end_index = curr-1;
-        }
-        else{
-            start_index = curr+1;
-        }
 
-        // checking which is closest
-        if (distance(myPoint, points[closest]) > distance(myPoint, points[curr]))
-            closest = curr;
-    }
-
-    // finding the absolute closest in the list, in order to be certain we have the right coordinate
-    for (int i = -2; i <= 2; i++) {
-        int idx = closest+i;
-        if (idx >= 0 && idx < len) { // Ensuring index is valid
-            if (distance(myPoint, points[idx]) < distance(myPoint, points[closest]))
-                closest = idx;
+        if (distance(myPoint, points[closest]) > distance(myPoint, points[i])) {
+            closest = i;
         }
     }
 
@@ -194,11 +185,17 @@ int find_nearest(Point myPoint, Point *points, int len) {
 }
 
 void determineColor(int px, int py, int *r_out, int *b_out) {
+    if (!is_init) {
+        log_error("Tableaux de points non-initialisees");
+        exit(EXIT_FAILURE);
+    }
+
     Point myPoint = { .x = px, .y = py };
 
     log_trace("Recherche des points bleu et rouges les plus proches");
     int nearest_blue = find_nearest(myPoint, blue_points, blen);
     int nearest_red = find_nearest(myPoint, red_points, rlen);
+
 
     log_trace("Calcul de la distance entre les deux points");
     double dist_blue = distance(myPoint, blue_points[nearest_blue]);
@@ -209,6 +206,7 @@ void determineColor(int px, int py, int *r_out, int *b_out) {
         log_error("Impossible d'avoir un points a la fois rouge et bleu");
         exit(EXIT_FAILURE);
     } 
+
     double total_distance = dist_blue + dist_red;
     *b_out = (total_distance-dist_blue)/total_distance * 255;
     *r_out = (total_distance-dist_red)/total_distance * 255;

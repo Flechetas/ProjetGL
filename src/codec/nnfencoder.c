@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <unistd.h>
+
 #include "codec/nnf.h"
 #include "neuralnet/model.h"
 

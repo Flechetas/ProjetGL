@@ -1,5 +1,6 @@
-#include "cli/cli.h"
 #include <string.h>
+
+#include "cli/cli.h"
 
 int endsWith(char *string, const char *suff)
 {

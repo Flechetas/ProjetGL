@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+
 #include "cli/cli.h"
 #include "log.h"
 

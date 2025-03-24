@@ -2,11 +2,10 @@
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
+
 #include "codec/nnf.h"
 #include "neuralnet/model.h"
 #include "CuTest.h"
-#include "draw/draw.h"
-#include "log.h"
 
 
 int equals(float a, float b) {
