@@ -29,8 +29,8 @@ bool display_init = false;
     
     float xMax = WINDOW_WIDTH;
     float yMax = WINDOW_HEIGHT;
-    for (int i = 0; i < WINDOW_HEIGHT; i++) {
-        for (int j = 0; j < WINDOW_WIDTH; j++) {
+    for (int i = 0; i < WINDOW_WIDTH; i++) {
+        for (int j = 0; j < WINDOW_HEIGHT; j++) {
             inputs[0] = (float)i / xMax;
             inputs[1] = (float)j / yMax;
 
@@ -39,7 +39,7 @@ bool display_init = false;
 
             log_trace("Drawing point (%d, %d)...", i, j);
             SDL_SetRenderDrawColor(the_renderer, (int)(res[0]*255), 0, (int)(res[1]*255), SDL_ALPHA_OPAQUE);
-            SDL_RenderDrawPoint(the_renderer, j, i);
+            SDL_RenderDrawPoint(the_renderer, i, j);
         }
     }
 
