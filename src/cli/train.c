@@ -63,7 +63,6 @@ int execTrain(int argc, char *argv[]) {
             if(batch_size == 0) {
                 printf("Invalid argument --batch.\n");    
             }
-            free(batch_size_str);
             continue;
         }
         if(strcmp(argv[i], "--step") == 0) {
@@ -77,7 +76,6 @@ int execTrain(int argc, char *argv[]) {
             if(training_step == 0.0) {
                 printf("Invalid argument --step.\n");    
             }
-            free(step_str);
             continue;
         }
         if(i == argc-1) {
