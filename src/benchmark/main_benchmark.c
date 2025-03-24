@@ -18,7 +18,7 @@ gcc -o build/main_benchmark \
     ./build/main_benchmark
 
 */
-
+/*
 int main() {    
     int iterations = 1000;      // Nombre d'exécutions pour le benchmark
     int nb_layer = 3;           // Nombre de couches
@@ -31,4 +31,4 @@ int main() {
     benchmarkBackpropagation(iterations, nb_layer, input_size, hidden_size, output_size, training_step);
     
     return 0;
-}
+}*/
