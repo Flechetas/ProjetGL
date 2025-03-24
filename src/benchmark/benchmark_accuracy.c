@@ -69,7 +69,7 @@ void benchmarkAccuracyBRUT(Model model, float **inputs, float **expected_outputs
 
     float accuracy = (float)correct / nb_samples;
     printf("=== Résultat du benchmark (précision expected_outputs) ===\n");
-    printf("Corrects : %d / %d\n", correct, nb_samples);
+    printf("Corrects : %d / %d (ittérations)\n", correct, nb_samples);
     printf("Précision : %.2f%%\n", accuracy * 100.0);
 
 }
@@ -169,7 +169,7 @@ void benchmarkAccuracyDetermineColor(Model model, float **inputs, int nb_samples
     float accuracyDC = (float)correctDC / nb_samples;
 
     printf("=== Résultat du benchmark (précision avec determineColor) ===\n");
-    printf("Corrects : %d / %d\n", correctDC, nb_samples);
+    printf("Corrects : %d / %d (ittérations)\n", correctDC, nb_samples);
     printf("Précision : %.2f%%\n", accuracyDC * 100.0);
 }
 

@@ -248,5 +248,3 @@ void drawColoredPoints(SDL_Renderer *renderer, const char *filename) {
     fclose(file);
     SDL_RenderPresent(renderer);
 }
-
-
