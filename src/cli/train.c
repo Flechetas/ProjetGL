@@ -20,6 +20,7 @@ int displayTrainHelp() {
     printf(" --input <filename.nnf> : the input model file name\n");
     printf(" --batch <int> : the training dataset size\n");
     printf(" --step <float> : the amount of change of each training step\n");
+    printf(" --visualise : specifies if the model should be visualized during the training process");
     printf(" <output.nnf> : the output file name\n\n");
     return 0;
 }
@@ -39,10 +40,15 @@ int execTrain(int argc, char *argv[]) {
     float training_step = TRAINING_STEP;
     char *input_file = INPUT_FILE;
     char *output_file = OUTPUT_FILE;
+    int visualized = 0;
     Model model;
     int ret;
 
     for(int i = 2 ; i < argc ; i++) {
+        if(strcmp(argv[i], "--visualize") == 0) {
+            visualized = 1;
+            continue;
+        }
         if(strcmp(argv[i], "--input") == 0) {
             if(i >= argc-1) {
                 printf("Invalid argument cound.\n");
@@ -101,7 +107,7 @@ int execTrain(int argc, char *argv[]) {
         return ret;
     }
 
-    ret = trainOnSpiral(model, training_step, batch_size);
+    ret = trainOnSpiral(model, training_step, batch_size, visualized);
     if(ret != 0) {
         return ret;
     }

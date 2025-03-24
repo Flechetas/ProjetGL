@@ -12,7 +12,7 @@
 #define SPIRAL_VALUE_FILE "spiralFile.txt"
 #define COLOR_VALUE_FILE "colorValue.txt"
 
-int trainOnSpiral(Model model, float training_step, int batch_size) {
+int trainOnSpiral(Model model, float training_step, int batch_size, int visualized) {
     printf("Start training on spiral suite.\n");
     printf("training_step : %f | batch_size : %d\n", training_step, batch_size);
     
@@ -53,7 +53,7 @@ int trainOnSpiral(Model model, float training_step, int batch_size) {
     log_trace("Precomputing complete.\n");
 
     log_trace("Training...\n");
-    int ret = train(model, training_step, batch_size, inputs, 2, expecteds, 2);
+    int ret = train(model, training_step, batch_size, inputs, 2, expecteds, 2, visualized);
     if(ret != 0) {
         log_error("Error during training. Stopping.\n");
         return -1;
