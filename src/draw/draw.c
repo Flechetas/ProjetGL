@@ -84,16 +84,6 @@ void drawSpiral(SDL_Renderer *renderer) {
     SDL_RenderPresent(renderer);
 }
 
-int comparePoints(const void *a, const void *b) {
-    const Point *p1 = (const Point*) a;
-    const Point *p2 = (const Point*) b;
-
-    if (p1->x != p2->x) {
-        return p1->x - p2->x;
-    }
-    return p1->y - p2->y;
-}
-
 void initSpiralValues() {
     if (is_init) {
         log_error("Tableaux de points deja initialisees");
@@ -168,12 +158,7 @@ void initSpiralValues() {
     log_trace("Shrinking the arrays to size");
     blue_points = realloc(blue_points, sizeof(Point)*blen);
     red_points = realloc(red_points, sizeof(Point)*rlen);
-
     log_info("Remplissage du tableau effectue avec succes!");
-
-    log_info("Triage des tableaux");
-    qsort(blue_points, blen, sizeof(Point), comparePoints);
-    qsort(red_points, rlen, sizeof(Point), comparePoints);
 
     log_info("Initialisation terminee!");
     is_init = true;
@@ -184,37 +169,15 @@ double distance(Point p1, Point p2) {
 }
 
 int find_nearest(Point myPoint, Point *points, int len) {
-    int start_index = 0;
-    int end_index = len-1;
-    
-    int closest = start_index; // just some point in the array
-    
-    while (start_index <= end_index) {
-        int curr = (start_index+end_index)/2;
+    int closest = 0;
 
-        // exact match found
-        if (distance(myPoint, points[curr]) == 0) {
-            closest = curr;
+    for (int i = 1; i < len; i++) {
+        if (distance(myPoint, points[closest]) == 0) {
             break;
         }
-        else if (comparePoints(&myPoint, &points[curr]) < 0) {
-            end_index = curr-1;
-        }
-        else{
-            start_index = curr+1;
-        }
 
-        // checking which is closest
-        if (distance(myPoint, points[closest]) > distance(myPoint, points[curr]))
-            closest = curr;
-    }
-
-    // finding the absolute closest in the list, in order to be certain we have the right coordinate
-    for (int i = -2; i <= 2; i++) {
-        int idx = closest+i;
-        if (idx >= 0 && idx < len) { // Ensuring index is valid
-            if (distance(myPoint, points[idx]) < distance(myPoint, points[closest]))
-                closest = idx;
+        if (distance(myPoint, points[closest]) > distance(myPoint, points[i])) {
+            closest = i;
         }
     }
 
