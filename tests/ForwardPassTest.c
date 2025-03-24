@@ -13,81 +13,86 @@ static int equals(float a, float b) {
 }
 
 void TestForwardPass(CuTest* tc) {
-    // Création d'un modèle simple à 3 couches (2 -> 2 -> 1)
+    // Création du modèle 2 -> 3 -> 2
     Layer input = malloc(sizeof(struct layer));
     input->n = 2;
     input->neurons = malloc(sizeof(float) * input->n);
-    input->next = NULL;  // Important pour éviter les boucles
+    input->next = NULL;
 
     Layer hidden = malloc(sizeof(struct layer));
-    hidden->n = 2;
+    hidden->n = 3;
     hidden->neurons = malloc(sizeof(float) * hidden->n);
     hidden->next = NULL;
 
     Layer output = malloc(sizeof(struct layer));
-    output->n = 1;
+    output->n = 2;
     output->neurons = malloc(sizeof(float) * output->n);
-    output->next = NULL;  // Dernière couche 
+    output->next = NULL;
 
-    // Connexion des couches
+    // Connexion
     input->next = hidden;
     hidden->previous = input;
     hidden->next = output;
     output->previous = hidden;
 
-    // Initialisation des poids (matrice de connexion)
+    // Poids entrée -> cachée
     input->w = hidden->n;
     input->weight = malloc(sizeof(float*) * input->n);
     for (int i = 0; i < input->n; i++) {
         input->weight[i] = malloc(sizeof(float) * hidden->n);
     }
-    input->weight[0][0] = 0.2;
-    input->weight[0][1] = 0.4;
-    input->weight[1][0] = 0.3;
-    input->weight[1][1] = 0.5;
+    input->weight[0][0] = 0.1; input->weight[0][1] = 0.2; input->weight[0][2] = 0.3;
+    input->weight[1][0] = 0.4; input->weight[1][1] = 0.5; input->weight[1][2] = 0.6;
 
+    // Poids cachée -> sortie
     hidden->w = output->n;
     hidden->weight = malloc(sizeof(float*) * hidden->n);
     for (int i = 0; i < hidden->n; i++) {
         hidden->weight[i] = malloc(sizeof(float) * output->n);
     }
-    hidden->weight[0][0] = 0.6;
-    hidden->weight[1][0] = 0.7;
+    hidden->weight[0][0] = 0.1; hidden->weight[0][1] = 0.2;
+    hidden->weight[1][0] = 0.3; hidden->weight[1][1] = 0.4;
+    hidden->weight[2][0] = 0.5; hidden->weight[2][1] = 0.6;
 
     // Création du modèle
     Model model = malloc(sizeof(struct model));
     model->input = input;
     model->layer_n = 3;
 
-    // Entrée de test
+    // Entrée test
     float input_values[2] = {1.0, 0.5};
 
-    // Exécution de la propagation
+    // Propagation
     float* result = forwardPass(model, input_values);
 
-    // Calcul des valeurs attendues
-    float expected_hidden0 = activationFunction(1.0 * 0.2 + 0.5 * 0.3);
-    float expected_hidden1 = activationFunction(1.0 * 0.4 + 0.5 * 0.5);
-    float expected_output = activationFunction(expected_hidden0 * 0.6 + expected_hidden1 * 0.7);
+    // Calculs manuels attendus
+    float h0 = activationFunction(1.0 * 0.1 + 0.5 * 0.4); // 0.1 + 0.2 = 0.3
+    float h1 = activationFunction(1.0 * 0.2 + 0.5 * 0.5); // 0.2 + 0.25 = 0.45
+    float h2 = activationFunction(1.0 * 0.3 + 0.5 * 0.6); // 0.3 + 0.3 = 0.6
 
-    // Assertions
-    CuAssertTrue(tc, equals(expected_hidden0, hidden->neurons[0]));
-    CuAssertTrue(tc, equals(expected_hidden1, hidden->neurons[1]));
-    CuAssertTrue(tc, equals(expected_output, result[0]));
+    float o0 = activationFunction(h0 * 0.1 + h1 * 0.3 + h2 * 0.5);
+    float o1 = activationFunction(h0 * 0.2 + h1 * 0.4 + h2 * 0.6);
 
-    // Libération mémoire (évite les fuites)
+    // Ajustement valeurs de sorties
+    o0 = (o0 + 1) / 2;
+    o1 = (o1 + 1) / 2;
+
+    // Comparaisons
+    CuAssertTrue(tc, equals(h0, hidden->neurons[0]));
+    CuAssertTrue(tc, equals(h1, hidden->neurons[1]));
+    CuAssertTrue(tc, equals(h2, hidden->neurons[2]));
+
+    CuAssertTrue(tc, equals(o0, result[0]));
+    CuAssertTrue(tc, equals(o1, result[1]));
+
+    // Mémoire
     free(input->neurons);
-    
-    for (int i = 0; i < input->n; i++) {
-        free(input->weight[i]);
-    }
+    for (int i = 0; i < input->n; i++) free(input->weight[i]);
     free(input->weight);
     free(input);
 
     free(hidden->neurons);
-    for (int i = 0; i < hidden->n; i++) {
-        free(hidden->weight[i]);
-    }
+    for (int i = 0; i < hidden->n; i++) free(hidden->weight[i]);
     free(hidden->weight);
     free(hidden);
 
