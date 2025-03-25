@@ -1,0 +1,15 @@
+#ifndef MNIST_H
+#define MNIST_H
+
+#include "image/image.h"
+
+#define TRAIN_IMAGES_FILENAME "train-images.idx3-ubyte"
+#define TRAIN_LABEL_FILENAME  "train-labels.idx1-ubyte"
+#define TEST_IMAGES_FILENAME  "t10k-images.idx3-ubyte"
+#define TEST_LABEL_FILENAME   "t10k-labels.idx1-ubyte"
+
+int parseImageIDX(const char *filename, int *out_count, Image **images);
+
+int parseLabelIDX(const char *filename, int *out_count, int **labels);
+
+#endif //MNIST_H
