@@ -137,7 +137,7 @@ bool display_isInit() {
 
 int displaySpiral() {
     displaySetup();
-    drawSpiralFull();
+    drawSpiral(the_renderer);
     displayClear();
     
     return 0;

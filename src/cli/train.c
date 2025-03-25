@@ -107,7 +107,7 @@ int execTrain(int argc, char *argv[]) {
         return ret;
     }
 
-    ret = trainOnSpiral(model, training_step, batch_size, visualized);
+    ret = trainOnPoints(model, training_step, batch_size, visualized);
     if(ret != 0) {
         return ret;
     }
