@@ -1,7 +1,9 @@
 #ifndef BENCHMARK_FUNCTION_H
 #define BENCHMARK_FUNCTION_H
 
-#include "../neuralnet/model.h"
+#include <time.h>
+
+#include "neuralnet/model.h"
 
 /**  
 * @brief Benchmark métrique temporel

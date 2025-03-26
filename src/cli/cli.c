@@ -27,7 +27,7 @@ int exec(int argc, char *argv[]) {
         return generate(argc, argv);
     }
     if(strcmp(arg, "benchmark") == 0) {
-        return benchmark_execTrain(argc, argv);
+        return execBenchmark(argc, argv);
     }
 
     return 0;

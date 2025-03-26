@@ -47,7 +47,7 @@ int displayHelp(int argc, char *argv[]);
     * @param argv arguments
     * @return 0 on success, error code otherwise
  */
-int benchmark_execTrain(int argc, char *argv[]);
+int execBenchmark(int argc, char *argv[]);
 
 /*
  * @brief check if string has suffix suff
