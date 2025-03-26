@@ -2,7 +2,7 @@
 #define DRAW_H
 
 #define M_PI 3.14159265358979323846
-#define SPIRAL_VALUE_FILE "spiralFile.txt" // do we really need this ?
+#define SPIRAL_VALUE_FILE "spiralFile.txt"
 #define COLOR_VALUE_FILE "colorValue.txt"
 
 #include <SDL2/SDL.h>

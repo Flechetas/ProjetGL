@@ -42,10 +42,10 @@ int generate(int argc, char *argv[]);
 int displayHelp(int argc, char *argv[]);
 
 /**
-    * @brief parses the benchmark command
-    * @param argc number of arguments
-    * @param argv arguments
-    * @return 0 on success, error code otherwise
+ * @brief parses the benchmark command
+ * @param argc number of arguments
+ * @param argv arguments
+ * @return 0 on success, error code otherwise
  */
 int execBenchmark(int argc, char *argv[]);
 
