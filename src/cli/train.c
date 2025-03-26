@@ -5,7 +5,9 @@
 
 #include "cli/cli.h"
 #include "codec/nnf.h"
+#include "log.h"
 #include "neuralnet/model.h"
+#include "training/numberSuite.h"
 #include "training/spiralSuite.h"
 
 #define BATCH_SIZE 10000
@@ -18,6 +20,7 @@ int displayTrainHelp() {
     printf("Usage: train --input <filename.nnf> [options] <output.nnf>\n\n");
     printf("Options :\n");
     printf(" --input <filename.nnf> : the input model file name\n");
+    printf(" --suite <suite> : the training suite used to train the model\n");
     printf(" --batch <int> : the training dataset size\n");
     printf(" --step <float> : the amount of change of each training step\n");
     printf(" --visualise : specifies if the model should be visualized during the training process");
@@ -25,13 +28,6 @@ int displayTrainHelp() {
     return 0;
 }
 
-/*
- * train
- * --input <filepath>
- * --batch <int>    | 10000
- * --step <float>   | 0.001
- *  <output_path>
- */
 int execTrain(int argc, char *argv[]) {
     if(argc == 3 && strcmp(argv[2], "--help") == 0) {
         return displayTrainHelp(); 
@@ -40,6 +36,7 @@ int execTrain(int argc, char *argv[]) {
     float training_step = TRAINING_STEP;
     char *input_file = INPUT_FILE;
     char *output_file = OUTPUT_FILE;
+    char *suite = "";
     int visualized = 0;
     Model model;
     int ret;
@@ -55,6 +52,15 @@ int execTrain(int argc, char *argv[]) {
                 return 1;
             } 
             input_file = argv[i+1];
+            i++;
+            continue;
+        }
+        if(strcmp(argv[i], "--suite") == 0) {
+            if(i >= argc-1) {
+                printf("Invalid argument cound.\n");
+                return 1;
+            } 
+            suite = argv[i+1];
             i++;
             continue;
         }
@@ -99,17 +105,28 @@ int execTrain(int argc, char *argv[]) {
 
     }
 
+    if(strcmp(suite, "") == 0) {
+        log_error("No training suite given\n");
+        return -1;
+    }
     if(access(input_file, F_OK) != 0) {
-        printf("Input file %s does not exist.\n", input_file);
+        log_error("Input file %s does not exist.\n", input_file);
+        return -1;
     }
     ret = fromFile(input_file, &model);
     if(ret != 0) {
         return ret;
     }
-
-    ret = trainOnSpiral(model, training_step, batch_size, visualized);
-    if(ret != 0) {
-        return ret;
+    
+    // Train on given suite
+    if(strcmp(suite, "spiral") == 0) {
+        ret = trainOnSpiral(model, training_step, batch_size, visualized);
+        if(ret != 0) {
+            return ret;
+        }
+    }
+    if(strcmp(suite, "numbers") == 0) {
+        ret = trainOnNumbers(model, training_step);
     }
 
     saveToFile(model, output_file);
