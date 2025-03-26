@@ -3,6 +3,7 @@ build/
 docs/
 *.nnf
 *.txt
+*-ubyte
 
 src/test.c
 main.test
