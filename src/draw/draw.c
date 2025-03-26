@@ -68,15 +68,15 @@ int getRlen() {
 void drawSpiral(SDL_Renderer *renderer) {
 
     for (int t = 0; t < WINDOW_WIDTH/sqrt(2); t+=2) {
-        int x = WINDOW_WIDTH/2 + t*cos(t*M_PI/180);
-        int y = WINDOW_HEIGHT/2 + t*sin(t*M_PI/180);
+        int x = WINDOW_WIDTH/(float)2 + t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/(float)2 + t*sin(t*M_PI/180);
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE); // Bleu
         SDL_RenderDrawPoint(renderer, x, y);
     }
 
     for (int t = 1; t < WINDOW_WIDTH/sqrt(2); t+=2) {
-        int x = WINDOW_WIDTH/2 - t*cos(t*M_PI/180);
-        int y = WINDOW_HEIGHT/2 - t*sin(t*M_PI/180);
+        int x = WINDOW_WIDTH/(float)2 - t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/(float)2 - t*sin(t*M_PI/180);
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE); // Rouge
         SDL_RenderDrawPoint(renderer, x, y);
     }
@@ -106,8 +106,8 @@ void initSpiralValues() {
     // Spirale bleue
     log_info("Remplissage du tableau de points bleus...");
     for (int t = 0; t < WINDOW_WIDTH/sqrt(2); t+=2) {
-        int x = WINDOW_WIDTH/2 + t*cos(t*M_PI/180);
-        int y = WINDOW_HEIGHT/2 + t*sin(t*M_PI/180);
+        int x = WINDOW_WIDTH/(float)2 + t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/(float)2 + t*sin(t*M_PI/180);
 
         if(x < WINDOW_WIDTH && y < WINDOW_HEIGHT) {
             if (blen == blue_capacity){
@@ -133,8 +133,8 @@ void initSpiralValues() {
     //Spirale rouge
     log_info("Remplissage du tableau de points rouges...");    
     for (int t = 1; t < WINDOW_WIDTH/sqrt(2); t+=2) {
-        int x = WINDOW_WIDTH/2 - t*cos(t*M_PI/180);
-        int y = WINDOW_HEIGHT/2 - t*sin(t*M_PI/180);
+        int x = WINDOW_WIDTH/(float)2 - t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/(float)2 - t*sin(t*M_PI/180);
 
         if(x < WINDOW_WIDTH && y < WINDOW_HEIGHT) {
             if (rlen == red_capacity){
