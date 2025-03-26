@@ -31,14 +31,17 @@ float *layerCost(Layer layer, float *expected) {
     return cost;
 }
 
-float backpropagate(Model model, float training_step, float *input, float *expected) {
-    float outCost = 0;
+void backpropagate(Model model, float training_step, float *input, float *expected, float *out_cost, float *out_diff) {
     int step = countLayers(model) - 2;
     float **costs = malloc(sizeof(float*) * (model->layer_n-1));
     
     forwardPass(model, input);
     Layer layer = lastLayer(model);
     costs[step] = outputCost(layer, expected);
+    for(int i = 0 ; i < layer->n ; i++) {
+        *out_cost += fabsf(costs[step][i]);
+    }
+    *out_cost /= (float)layer->n;
     
     layer = layer->previous;
     step--;
@@ -47,7 +50,7 @@ float backpropagate(Model model, float training_step, float *input, float *expec
         layer = layer->previous;
         step--;
     }
-
+    
     step = 0;
     layer = firstLayer(model)->next;
     while(layer != NULL) {
@@ -55,7 +58,7 @@ float backpropagate(Model model, float training_step, float *input, float *expec
         for(int i = 0 ; i < len ; i++) {
             for(int j = 0 ; j < layer->previous->n ; j++) {
                 float diff = training_step * costs[step][i] * layer->previous->neurons[j];
-                outCost += fabsf(diff);
+                *out_diff += fabsf(diff);
                 layer->previous->weight[j][i] += diff;
             }
         }
@@ -67,6 +70,5 @@ float backpropagate(Model model, float training_step, float *input, float *expec
         free(costs[i]);
     }
     free(costs);
-
-    return outCost;
+    
 }

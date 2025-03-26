@@ -11,6 +11,6 @@
  * @param input Le vecteur attendu (valeur des neurones attendus)
  * @return the sum of the the costs of the model
  */
-float backpropagate(Model model, float training_step, float *input, float *expected);
+void backpropagate(Model model, float training_step, float *input, float *expected, float *out_cost, float *out_diff);
 
 #endif //BACKPROPAGATION_H
