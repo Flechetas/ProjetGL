@@ -1,12 +1,19 @@
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <time.h>
-#include "../include/neuralnet/model.h"
-#include "../include/neuralnet/ForwardPass.h"
-#include "../include/benchmark/benchmark_function.h"
-#include "../include/draw/draw.h"    
-#include "../include/config/config.h"  
+#include <stdio.h>
+#include <time.h>
+
+#include "neuralnet/model.h"
+#include "neuralnet/ForwardPass.h"
+#include "draw/draw.h"    
+#include "config/config.h"  
+#include "draw/draw.h"
+#include "config/config.h"
+#include "log.h"
+
+#define SAMPLE_SIZE 1000
 
 /** 
 * @brief Retourne l’indice de la valeur maximale dans un tableau
@@ -28,22 +35,10 @@ float* getOutputValues(Model model) {
     return lastLayer(model)->neurons;
 }
 
-// métrique temporel
-void benchmarkTIME(clock_t start, clock_t end, int nb_samples){
-
-    double total_time = (double)(end - start) / CLOCKS_PER_SEC;
-    double avg_time = total_time / nb_samples * 1000.0;
-    int minutes = (int)(total_time / 60);
-    double seconds = total_time - minutes * 60;
-
-    printf("=== Résultat du benchmark (temps) ===\n");
-    printf("Temps total : %d min %.2f sec\n", minutes, seconds);
-    printf("Temps moyen par instance : %.4f ms\n", avg_time);
-}
-
 void benchmarkAccuracyBRUT(Model model, float **inputs, float **expected_outputs, int nb_samples, int output_size) {
     int correct = 0;
 
+    clock_t start = clock();
     for (int i = 0; i < nb_samples; i++) {
         //float *prediction = forwardPass(model, inputs[i]);
         float *prediction = getOutputValues(model);
@@ -67,10 +62,19 @@ void benchmarkAccuracyBRUT(Model model, float **inputs, float **expected_outputs
         }*/
     }
 
+
+    clock_t end = clock();
+
+    double total_time = (double)(end - start) / CLOCKS_PER_SEC;
+    double avg_time = total_time / nb_samples * 1000.0;
+    int minutes = (int)(total_time / 60);
+    double seconds = total_time - minutes * 60;
     float accuracy = (float)correct / nb_samples;
     printf("=== Résultat du benchmark (précision expected_outputs) ===\n");
     printf("Corrects : %d / %d (itérations)\n", correct, nb_samples);
     printf("Précision : %.2f%%\n", accuracy * 100.0);
+    printf("Temps total : %d min %.2f sec\n", minutes, seconds);
+    printf("Temps moyen par instance : %.4f ms\n", avg_time);
 
 }
 
@@ -89,6 +93,8 @@ void benchmarkAccuracyPoints(Model model, int output_size){
     printf("blue_count = %d\n", blue_count);
     int correctSpi = 0;
     int total = red_count + blue_count;
+
+    clock_t start = clock();
 
     //Par rapport aux points de la spirale
     // points rouges
@@ -127,10 +133,18 @@ void benchmarkAccuracyPoints(Model model, int output_size){
         }*/
     }
 
+    clock_t end = clock();
+
+    double total_time = (double)(end - start) / CLOCKS_PER_SEC;
+    double avg_time = total_time / total * 1000.0;
+    int minutes = (int)(total_time / 60);
+    double seconds = total_time - minutes * 60;
     float accuracySpi = (float)correctSpi / total;
     printf("=== Résultat du benchmark (précision avec tableau de points) ===\n");
     printf("Corrects : %d / %d (nb points)\n", correctSpi, total);
     printf("Précision : %.2f%%\n", accuracySpi * 100.0);
+    printf("Temps total : %d min %.2f sec\n", minutes, seconds);
+    printf("Temps moyen par instance : %.4f ms\n", avg_time);
 
 }
 
@@ -140,6 +154,7 @@ void benchmarkAccuracyDetermineColor(Model model, float **inputs, int nb_samples
     int yMax = WINDOW_HEIGHT;
 
     int correctDC = 0;
+    clock_t start = clock();
     for (int i = 0; i < nb_samples; i++) {
 
         float *prediction = forwardPass(model, inputs[i]);
@@ -166,11 +181,20 @@ void benchmarkAccuracyDetermineColor(Model model, float **inputs, int nb_samples
             getchar(); 
         }*/
     }
+
+    clock_t end = clock();
+
+    double total_time = (double)(end - start) / CLOCKS_PER_SEC;
+    double avg_time = total_time / nb_samples * 1000.0;
+    int minutes = (int)(total_time / 60);
+    double seconds = total_time - minutes * 60;
     float accuracyDC = (float)correctDC / nb_samples;
 
     printf("=== Résultat du benchmark (précision avec determineColor) ===\n");
     printf("Corrects : %d / %d (itérations)\n", correctDC, nb_samples);
     printf("Précision : %.2f%%\n", accuracyDC * 100.0);
+    printf("Temps total : %d min %.2f sec\n", minutes, seconds);
+    printf("Temps moyen par instance : %.4f ms\n", avg_time);
 }
 
 void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float **expected_outputs, int output_size, clock_t start, clock_t end) {
@@ -184,9 +208,6 @@ void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float
     // Accuracy avec DetermineColor()
     benchmarkAccuracyDetermineColor(model, inputs, nb_samples, output_size);
 
-    // Métrique temporel 
-    benchmarkTIME(start, end, nb_samples);
-
     /* // Recap affichage
 
     // métrique précision
@@ -194,19 +215,71 @@ void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float
     printf("=== Résultat du benchmark (précision avec tableau de points) ===\n");
     printf("Corrects : %d / %d (nb points)\n", correctSpi, total);
     printf("Précision : %.2f%%\n", accuracySpi * 100.0);
+    printf("Temps total : %d min %.2f sec\n", minutes, seconds);
+    printf("Temps moyen par instance : %.4f ms\n", avg_time);
 
     printf("=== Résultat du benchmark (précision expected_outputs) ===\n");
     printf("Corrects : %d / %d\n", correct, nb_samples);
     printf("Précision : %.2f%%\n", accuracy * 100.0);
+    printf("Temps total : %d min %.2f sec\n", minutes, seconds);
+    printf("Temps moyen par instance : %.4f ms\n", avg_time);
 
     printf("=== Résultat du benchmark (précision avec determineColor) ===\n");
     printf("Corrects : %d / %d\n", correctDC, nb_samples);
     printf("Précision : %.2f%%\n", accuracyDC * 100.0);
-
-    // métrique temps
-
-    printf("=== Résultat du benchmark (temps) ===\n");
     printf("Temps total : %d min %.2f sec\n", minutes, seconds);
     printf("Temps moyen par instance : %.4f ms\n", avg_time);
+
     */
+}
+
+int benchmarkSpiral(Model model) {
+    if (!isInit()) {
+        log_trace("Initialising spiral values...\n");
+        initSpiralValues();
+        log_trace("Generation complete!\n");
+    }
+    else {
+        log_trace("Spiral values found\n");
+    }
+
+    log_trace("Precomputing training values...\n");
+    srand(time(NULL));
+    int r;
+    int b;
+    int xMax = WINDOW_WIDTH;
+    int yMax = WINDOW_HEIGHT;
+    float **inputs = malloc(SAMPLE_SIZE * sizeof(float *));
+    float **expecteds = malloc(SAMPLE_SIZE * sizeof(float *));
+    for(int i = 0 ; i < SAMPLE_SIZE ; i++) {
+        float x = rand() % xMax;
+        float y = rand() % yMax;
+        inputs[i] = malloc(2 * sizeof(float));
+        inputs[i][0] = x / (float)xMax;
+        inputs[i][1] = y / (float)yMax;
+        
+        determineColor(x, y, &r, &b);
+        expecteds[i] = malloc(2 * sizeof(float));
+        if(r > b) {
+            expecteds[i][0] = 1.0;
+            expecteds[i][1] = 0.0;
+        } else {
+            expecteds[i][0] = 0.0;
+            expecteds[i][1] = 1.0;
+        }
+    }
+    log_trace("Precomputing complete.\n");
+
+    clock_t start = clock();
+    clock_t end = clock();
+    benchmarkAccuracyAndTime(model, inputs, SAMPLE_SIZE, expecteds, 2, start, end);
+
+    for(int i = 0 ; i < SAMPLE_SIZE ; i++) {
+        free(inputs[i]);
+        free(expecteds[i]);
+    }
+    free(inputs);
+    free(expecteds);
+
+    return 0;
 }
