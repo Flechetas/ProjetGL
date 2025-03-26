@@ -39,9 +39,6 @@ float backpropagate(Model model, float training_step, float *input, float *expec
     forwardPass(model, input);
     Layer layer = lastLayer(model);
     costs[step] = outputCost(layer, expected);
-    for(int i = 0 ; i < layer->n ; i++) {
-        outCost += costs[step][i];
-    }
     
     layer = layer->previous;
     step--;
@@ -58,6 +55,7 @@ float backpropagate(Model model, float training_step, float *input, float *expec
         for(int i = 0 ; i < len ; i++) {
             for(int j = 0 ; j < layer->previous->n ; j++) {
                 float diff = training_step * costs[step][i] * layer->previous->neurons[j];
+                outCost += fabsf(diff);
                 layer->previous->weight[j][i] += diff;
             }
         }
