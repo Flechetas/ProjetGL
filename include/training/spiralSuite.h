@@ -13,6 +13,5 @@
  */
 int trainOnSpiral(Model model, float training_step, int batch_size, int visualized);
 
-int trainOnPoints(Model model, float training_step, int batch_size, int visualized);
 
 #endif //SPIRAL_SUITE_H
