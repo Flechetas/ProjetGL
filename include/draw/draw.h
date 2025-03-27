@@ -22,7 +22,7 @@
  * les points bleus, et l'autre qui represente les points rouges.                
  *                                                                               
  * Pour initialiser les tableaux, il faut le faire au debut de l'utilisation par
- *  initPoints()
+ *  initSpiralPoints()
  * 
  * Pour verifier si les tableaux sont initialises, on a la fonction isInit()
  * 
@@ -42,7 +42,7 @@ typedef struct {
 /**
  * @brief Precomputes the values of the spiral and stores them to an allocated local array
  */
-void initPoints();
+void initSpiralPoints();
 
 /**
  * @brief Function that tells you if the spiral arrays have been initialised

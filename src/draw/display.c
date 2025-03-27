@@ -56,7 +56,7 @@ void drawSpiralFull() {
     }
 
     log_trace("Initialising spiral values");
-    initPoints();
+    initSpiralPoints();
 
     log_trace("Calculating point values");
     int r = 0, b = 0;

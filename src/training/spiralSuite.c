@@ -16,7 +16,7 @@ int trainOnSpiral(Model model, float training_step, int batch_size, int visualiz
     
     if (!draw_isInit()) {
         log_trace("Initialising spiral values...\n");
-        initPoints();
+        initSpiralPoints();
         log_trace("Generation complete!\n");
     }
     else {

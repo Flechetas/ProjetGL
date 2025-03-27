@@ -7,7 +7,7 @@
 #include "log.h"
 
 void TestSpiralInitialisation(CuTest *tc) {
-    initPoints();
+    initSpiralPoints();
 
     Point *blue_points = getBluePoints();
     Point *red_points = getRedPoints();

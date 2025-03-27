@@ -65,7 +65,7 @@ int getRlen() {
     return rlen;
 }
 
-void initPoints() {
+void initSpiralPoints() {
     if (is_init) {
         log_error("Tableaux de points deja initialisees");
         exit(EXIT_FAILURE);
