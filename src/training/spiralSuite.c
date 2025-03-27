@@ -16,9 +16,9 @@ int trainOnSpiral(Model model, float training_step, int batch_size, int visualiz
     printf("Start training on spiral suite.\n");
     printf("training_step : %f | batch_size : %d\n", training_step, batch_size);
     
-    if (!isInit()) {
+    if (!draw_isInit()) {
         log_trace("Initialising spiral values...\n");
-        initSpiralValues();
+        initPoints();
         log_trace("Generation complete!\n");
     }
     else {
@@ -66,6 +66,7 @@ int trainOnSpiral(Model model, float training_step, int batch_size, int visualiz
     }
     free(inputs);
     free(expecteds);
+    freePoints();
 
     return 0;
 }

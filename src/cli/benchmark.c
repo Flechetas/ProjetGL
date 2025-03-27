@@ -19,7 +19,7 @@ int execBenchmark(int argc, char **argv) {
     for(int i = 2 ; i < argc ; i++) {
         if(strcmp(argv[i], "--suite") == 0) {
             if(i >= argc-1) {
-                printf("Invalid argument found.\n");
+                log_error("Invalid argument found.\n");
                 return 1;
             } 
             suite = argv[i+1];
@@ -29,7 +29,7 @@ int execBenchmark(int argc, char **argv) {
         // Input file
         if(i == argc-1) {
             if(endsWith(argv[i], ".nnf") != 0) {
-                printf("Invalid output file %s. Output file must have extension .nnf", argv[i]);
+                log_error("Invalid output file %s. Output file must have extension .nnf", argv[i]);
                 return 1;
             }
             input_file = argv[i];

@@ -80,7 +80,7 @@ void benchmarkAccuracyBRUT(Model model, float **inputs, float **expected_outputs
 
 void benchmarkAccuracyPoints(Model model, int output_size){
     
-    //initSpiralValues(); 
+    //initPoints(); 
 
     int xMax = WINDOW_WIDTH;
     int yMax = WINDOW_HEIGHT;
@@ -234,9 +234,9 @@ void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float
 }
 
 int benchmarkSpiral(Model model) {
-    if (!isInit()) {
+    if (!draw_isInit()) {
         log_trace("Initialising spiral values...\n");
-        initSpiralValues();
+        initPoints();
         log_trace("Generation complete!\n");
     }
     else {

@@ -5,8 +5,8 @@
 #include "codec/nnf.h"
 #include "log.h"
 
-SDL_Window *the_window = NULL;
-SDL_Renderer *the_renderer = NULL;
+SDL_Window *window = NULL;
+SDL_Renderer *renderer = NULL;
 bool display_init = false;
 
 /*-------------------------------------------------------------*
@@ -38,12 +38,12 @@ bool display_init = false;
             float *res = forwardPass(model, inputs);
 
             log_trace("Drawing point (%d, %d)...", i, j);
-            SDL_SetRenderDrawColor(the_renderer, (int)(res[0]*255), 0, (int)(res[1]*255), SDL_ALPHA_OPAQUE);
-            SDL_RenderDrawPoint(the_renderer, i, j);
+            SDL_SetRenderDrawColor(renderer, (int)(res[0]*255), 0, (int)(res[1]*255), SDL_ALPHA_OPAQUE);
+            SDL_RenderDrawPoint(renderer, i, j);
         }
     }
 
-    SDL_RenderPresent(the_renderer);
+    SDL_RenderPresent(renderer);
 
     log_trace("Freeing resources");
     free(inputs);
@@ -56,7 +56,7 @@ void drawSpiralFull() {
     }
 
     log_trace("Initialising spiral values");
-    initSpiralValues();
+    initPoints();
 
     log_trace("Calculating point values");
     int r = 0, b = 0;
@@ -64,14 +64,33 @@ void drawSpiralFull() {
         for (int j = 0; j < WINDOW_HEIGHT; j++) {
             determineColor(i, j, &r, &b);
             
-            SDL_SetRenderDrawColor(the_renderer, r, 0, b, SDL_ALPHA_OPAQUE);
-            SDL_RenderDrawPoint(the_renderer, i, j);
+            SDL_SetRenderDrawColor(renderer, r, 0, b, SDL_ALPHA_OPAQUE);
+            SDL_RenderDrawPoint(renderer, i, j);
         }
     }
 
     log_trace("Presenting and freeing");
-    SDL_RenderPresent(the_renderer);
-    freeSpirals();
+    SDL_RenderPresent(renderer);
+    freePoints();
+}
+
+void drawSpiral() {
+
+    for (int t = 0; t < WINDOW_WIDTH/sqrt(2); t+=2) {
+        int x = WINDOW_WIDTH/(float)2 + t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/(float)2 + t*sin(t*M_PI/180);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE); // Bleu
+        SDL_RenderDrawPoint(renderer, x, y);
+    }
+
+    for (int t = 1; t < WINDOW_WIDTH/sqrt(2); t+=2) {
+        int x = WINDOW_WIDTH/(float)2 - t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/(float)2 - t*sin(t*M_PI/180);
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE); // Rouge
+        SDL_RenderDrawPoint(renderer, x, y);
+    }
+
+    SDL_RenderPresent(renderer);
 }
 
 /*------------------------------------------------------------------------*
@@ -89,27 +108,27 @@ int displaySetup() {
         return 1;
     }
 
-    the_window = SDL_CreateWindow("Coloration par Distance",
+    window = SDL_CreateWindow("Coloration par Distance",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
                                           WINDOW_WIDTH, WINDOW_HEIGHT,
                                           SDL_WINDOW_RESIZABLE);
-    if (!the_window) {
+    if (!window) {
         log_fatal("Erreur SDL_CreateWindow: %s\n", SDL_GetError());
         SDL_Quit();
         return 1;
     }
 
-    the_renderer = SDL_CreateRenderer(the_window, -1, SDL_RENDERER_ACCELERATED);
-    if (!the_renderer) {
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
         log_fatal("Erreur SDL_CreateRenderer: %s\n", SDL_GetError());
-        SDL_DestroyWindow(the_window);
+        SDL_DestroyWindow(window);
         SDL_Quit();
         return 1;
     }
 
-    SDL_SetRenderDrawColor(the_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(the_renderer);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
     display_init = true;
 
     return 0;
@@ -119,8 +138,8 @@ int displayClear() {
     // A brief delay
     SDL_Delay(5000);
 
-    SDL_DestroyRenderer(the_renderer);
-    SDL_DestroyWindow(the_window);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     SDL_Quit();
     display_init = false;
 
@@ -137,7 +156,7 @@ bool display_isInit() {
 
 int displaySpiral() {
     displaySetup();
-    drawSpiralFull();
+    drawSpiral();
     displayClear();
     
     return 0;

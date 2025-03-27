@@ -13,7 +13,7 @@ int rlen=0, blen=0;
 bool is_init;
 
 // frees the 2 color arrays (to be called at the end of main)
-void freeSpirals() {
+void freePoints() {
     if (!is_init) {
         log_error("Tableaux de points non-initialisees");
         exit(EXIT_FAILURE);
@@ -25,7 +25,7 @@ void freeSpirals() {
     rlen=0, blen=0;
 }
 
-bool isInit() {
+bool draw_isInit() {
     return is_init;
 } 
 
@@ -65,26 +65,7 @@ int getRlen() {
     return rlen;
 }
 
-void drawSpiral(SDL_Renderer *renderer) {
-
-    for (int t = 0; t < WINDOW_WIDTH/sqrt(2); t+=2) {
-        int x = WINDOW_WIDTH/(float)2 + t*cos(t*M_PI/180);
-        int y = WINDOW_HEIGHT/(float)2 + t*sin(t*M_PI/180);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE); // Bleu
-        SDL_RenderDrawPoint(renderer, x, y);
-    }
-
-    for (int t = 1; t < WINDOW_WIDTH/sqrt(2); t+=2) {
-        int x = WINDOW_WIDTH/(float)2 - t*cos(t*M_PI/180);
-        int y = WINDOW_HEIGHT/(float)2 - t*sin(t*M_PI/180);
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE); // Rouge
-        SDL_RenderDrawPoint(renderer, x, y);
-    }
-
-    SDL_RenderPresent(renderer);
-}
-
-void initSpiralValues() {
+void initPoints() {
     if (is_init) {
         log_error("Tableaux de points deja initialisees");
         exit(EXIT_FAILURE);
@@ -117,7 +98,7 @@ void initSpiralValues() {
                 Point *hld = realloc(blue_points, sizeof(Point)*blue_capacity);
                 if (hld == NULL) {
                     log_error("Erreur de reallocation du tableau");
-                    freeSpirals();
+                    freePoints();
                     exit(EXIT_FAILURE);
                 }
                 blue_points = hld;
@@ -144,7 +125,7 @@ void initSpiralValues() {
                 Point *hld = realloc(red_points, sizeof(Point)*red_capacity);
                 if (hld == NULL) {
                     log_error("Erreur de reallocation du tableau");
-                    freeSpirals();
+                    freePoints();
                     exit(EXIT_FAILURE);
                 }
                 red_points = hld;
@@ -210,41 +191,4 @@ void determineColor(int px, int py, int *r_out, int *b_out) {
     double total_distance = dist_blue + dist_red;
     *b_out = (total_distance-dist_blue)/total_distance * 255;
     *r_out = (total_distance-dist_red)/total_distance * 255;
-}
-
-void generateColorFile(const char *outputFile) {
-    FILE *file = fopen(outputFile, "w");
-    if (file == NULL) {
-        perror("Erreur d'ouverture du fichier de sortie.");
-        return;
-    }
-
-    for (int y = 0; y < WINDOW_HEIGHT; y++) {
-        for (int x = 0; x < WINDOW_WIDTH; x++) {
-            int r, b;
-            determineColor(x, y, &r, &b);
-            fprintf(file, "%d %d %d %d %d\n", x, y, r, 0, b); // RGB avec G = 0
-        }
-    }
-
-    fclose(file);
-    printf("Fichier %s généré avec succès !\n", outputFile);
-}
-
-
-void drawColoredPoints(SDL_Renderer *renderer, const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        perror("Erreur d'ouverture du fichier.");
-        return;
-    }
-
-    int x, y, r, g, b;
-    while (fscanf(file, "%d %d %d %d %d", &x, &y, &r, &g, &b) == 5) {
-        SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
-        SDL_RenderDrawPoint(renderer, x, y);
-    }
-
-    fclose(file);
-    SDL_RenderPresent(renderer);
 }

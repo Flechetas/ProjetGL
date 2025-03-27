@@ -10,20 +10,24 @@
 
 #include "neuralnet/model.h"
 
+/*-------------------------------------------------------*
+ *  POINT GENERATION FUNCTIONS                           *
+ *-------------------------------------------------------*/
+
 /*-------------------------------------------------------------------------------
- * ## IMPLEMENTATION NOTES ##                                                    
+ * ## NOTES D'IMPLEMENTATION ##                                                    
  *------------------------------------------------------------------------------- 
  *                                                                                  
  * Dans le fichier il y a deux tableaux de couleurs : 1 qui represente           
  * les points bleus, et l'autre qui represente les points rouges.                
  *                                                                               
  * Pour initialiser les tableaux, il faut le faire au debut de l'utilisation par
- *  initSpiralValues()
+ *  initPoints()
  * 
  * Pour verifier si les tableaux sont initialises, on a la fonction isInit()
  * 
  * Pour liberer toutes les ressources a la fin de l'utilisation, il faut appeler
- * la fonction freeSpirals
+ * la fonction freePoints()
  *                                                                                  
  *-------------------------------------------------------------------------------
  */
@@ -36,17 +40,22 @@ typedef struct {
 } Point;
 
 /**
- * @brief Function that tells you if the spiral arrays have been initialised
+ * @brief Precomputes the values of the spiral and stores them to an allocated local array
  */
-bool isInit();
+void initPoints();
 
 /**
- * @brief Function used for testing purposes to pull the blue_points array
+ * @brief Function that tells you if the spiral arrays have been initialised
+ */
+bool draw_isInit();
+
+/**
+ * @brief Function used to pull the blue_points array
  */
 Point *getBluePoints();
 
 /**
- * @brief Function used for testing purposes to pull the red_points array
+ * @brief Function used to pull the red_points array
  */
 Point *getRedPoints();
 
@@ -61,17 +70,16 @@ int getBlen();
 int getRlen();
 
 /**
- * @brief an auxiliary function for qsort, to be used EXCLUSIVELY for comparing point positions in a point array.
- * @param a Pointer to the test point
- * @param b Pointer to the comparison point
- * @return 0 if equal, a negative number if a < b, and a positive number if a > b
+ * @brief Determines all colors at each pixel based on distance from red and blue pixels
+ * @param r_out a pointer to where the red value should be stored
+ * @param b_out a pointer to where the blue value should be stored
  */
-int comparePoints(const void* a, const void *b);
+void determineColor(int px, int py, int *r_out, int *b_out);
 
 /**
  * @brief Function that frees the spiral arrays
  */
-void freeSpirals();
+void freePoints();
 
 /*-------------------------------------------------------*
  *  DISPLAY FUNCTIONS                                    *
@@ -102,30 +110,6 @@ int displayClear();
  * @param renderer Presents the spiral scene
  */
 void drawSpiral(SDL_Renderer *renderer);
-
-/**
- * @brief Precomputes the values of the spiral and stores them to an allocated local array
- */
-void initSpiralValues();
-
-/**
- * @brief Determines all colors at each pixel based on red and blue pixels
- * @param r_out a pointer to where the red value should be stored
- * @param b_out a pointer to where the blue value should be stored
- */
-void determineColor(int px, int py, int *r_out, int *b_out);
-
-/**
- * @brief Creates output.txt
- * @param renderer Presents the spiral scene
- */
-void generateColorFile(const char *outputFile);
-
-/**
- * @brief Creates the example image from output.txt
- * @param renderer Presents the spiral scene
- */
-void drawColoredPoints(SDL_Renderer *renderer, const char *filename);
 
 /**
  * @brief Presents the result of the points applied to the model

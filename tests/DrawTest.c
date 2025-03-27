@@ -7,7 +7,7 @@
 #include "log.h"
 
 void TestSpiralInitialisation(CuTest *tc) {
-    initSpiralValues();
+    initPoints();
 
     Point *blue_points = getBluePoints();
     Point *red_points = getRedPoints();
@@ -17,7 +17,7 @@ void TestSpiralInitialisation(CuTest *tc) {
     log_trace("blen = %d, rlen = %d", blen, rlen);
     CuAssertTrue(tc, blen > 0);
     CuAssertTrue(tc, rlen > 0);
-    freeSpirals();
+    freePoints();
 }
 
 CuSuite* CuGetDrawSuite() {
