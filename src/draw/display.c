@@ -1,7 +1,7 @@
 #include "draw/draw.h"
 #include "config/config.h"
 #include "neuralnet/model.h"
-#include "neuralnet/ForwardPass.h"
+#include "neuralnet/forwardpass.h"
 #include "codec/nnf.h"
 #include "log.h"
 

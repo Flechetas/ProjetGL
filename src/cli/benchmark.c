@@ -64,6 +64,6 @@ int execBenchmark(int argc, char **argv) {
         return 0;
     }
     
-    printf("No matching suite found.");
+    log_error("No matching suite found.");
     return -1;
 }

@@ -5,7 +5,7 @@
 #include "CuTest.h"
 #include "../include/neuralnet/layer.h"
 #include "../include/neuralnet/model.h"
-#include "../include/neuralnet/ForwardPass.h"
+#include "../include/neuralnet/forwardpass.h"
 
 static int equals(float a, float b) {
     float epsilon = 0.0001f; 

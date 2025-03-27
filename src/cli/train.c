@@ -48,7 +48,7 @@ int execTrain(int argc, char *argv[]) {
         }
         if(strcmp(argv[i], "--input") == 0) {
             if(i >= argc-1) {
-                printf("Invalid argument cound.\n");
+                log_error("Invalid argument count.\n");
                 return 1;
             } 
             input_file = argv[i+1];
@@ -57,7 +57,7 @@ int execTrain(int argc, char *argv[]) {
         }
         if(strcmp(argv[i], "--suite") == 0) {
             if(i >= argc-1) {
-                printf("Invalid argument cound.\n");
+                log_error("Invalid argument count.\n");
                 return 1;
             } 
             suite = argv[i+1];
@@ -66,33 +66,33 @@ int execTrain(int argc, char *argv[]) {
         }
         if(strcmp(argv[i], "--batch") == 0) {
             if(i >= argc-1) {
-                printf("Invalid argument cound.\n");
+                log_error("Invalid argument count.\n");
                 return 1;
             } 
             char *batch_size_str = argv[i+1];
             i++;
             batch_size = atoi(batch_size_str);
             if(batch_size == 0) {
-                printf("Invalid argument --batch.\n");    
+                log_error("Invalid argument --batch.\n");    
             }
             continue;
         }
         if(strcmp(argv[i], "--step") == 0) {
             if(i >= argc-1) {
-                printf("Invalid argument cound.\n");
+                log_error("Invalid argument cound.\n");
                 return 1;
             } 
             char *step_str = argv[i+1];
             i++;
             training_step = (float)atof(step_str);
             if(training_step == 0.0) {
-                printf("Invalid argument --step.\n");    
+                log_error("Invalid argument --step.\n");    
             }
             continue;
         }
         if(i == argc-1) {
             if(endsWith(argv[i], ".nnf") != 0) {
-                printf("Invalid output file %s. Output file must have extension .nnf", argv[i]);
+                log_error("Invalid output file %s. Output file must have extension .nnf", argv[i]);
                 return 1;
             }
             output_file = argv[i];
@@ -100,7 +100,7 @@ int execTrain(int argc, char *argv[]) {
         }
 
         // error
-        printf("Unknown argument : %s.\n", argv[i]);
+        log_error("Unknown argument : %s.\n", argv[i]);
         return 1;
 
     }

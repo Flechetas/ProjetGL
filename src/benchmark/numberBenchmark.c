@@ -2,7 +2,7 @@
 
 #include "benchmark/numberBenchmark.h"
 #include "codec/mnist.h"
-#include "neuralnet/ForwardPass.h"
+#include "neuralnet/forwardpass.h"
 #include "training/numberSuite.h"
 
 int benchmarkNumbers(Model model) {

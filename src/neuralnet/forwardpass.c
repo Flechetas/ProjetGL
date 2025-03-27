@@ -5,7 +5,7 @@
 
 #include "neuralnet/model.h"
 #include "neuralnet/layer.h"
-#include "neuralnet/ForwardPass.h"
+#include "neuralnet/forwardpass.h"
 
 // Fonction de transfert (tangente hyperbolique)
 float activationFunction(float x)

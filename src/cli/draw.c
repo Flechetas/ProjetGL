@@ -15,8 +15,8 @@ int displayDrawHelp() {
 
 int draw(int argc, char *argv[]) {
     if(argc < 3) {
-        log_error("Please specify which figure to draw.\nUse 'draw --help' to display help");
-        return 1;
+        log_error("Please specify which figure to draw.\n");
+        return displayDrawHelp();
     }
 
     if(strcmp(argv[2], "--help") == 0) {
@@ -35,6 +35,6 @@ int draw(int argc, char *argv[]) {
     }
     
     // If no figure matches
-    log_error("Figure %s doesn't match any current figure.\nUse 'draw --help' to display help", argv[2]);
-    return 1;
+    log_error("Figure %s doesn't match any current figure.\n", argv[2]);
+    return displayDrawHelp();
 }

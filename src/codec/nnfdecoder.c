@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 
+#include "log.h"
 #include "codec/nnf.h"
 #include "neuralnet/model.h"
 
@@ -57,6 +58,12 @@ int parseLayerN(char *line) {
     int n;
     int ret;
     ret = sscanf(line, "%d", &n);
+
+    if (ret == EOF) {
+        log_error("parseLayerN : Erreur de lecture");
+        return -1;
+    }
+
     return n;
 }
 

@@ -9,8 +9,8 @@ int exec(int argc, char *argv[]) {
     log_set_level(2);
 
     if(argc < 2) {
-        printf("Not enough argument. Use help to display help.\n");
-        return 1;
+        log_error("Not enough arguments.\n");
+        return displayHelp(argc, argv); 
     } 
 
     char *arg = argv[1];

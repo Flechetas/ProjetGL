@@ -6,7 +6,7 @@
 #include <time.h>
 
 #include "neuralnet/model.h"
-#include "neuralnet/ForwardPass.h"
+#include "neuralnet/forwardpass.h"
 #include "draw/draw.h"    
 #include "config/config.h"  
 #include "draw/draw.h"
