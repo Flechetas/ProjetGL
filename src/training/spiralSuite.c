@@ -9,8 +9,6 @@
 #include "training/training.h"
 #include "log.h"
 
-#define SPIRAL_VALUE_FILE "spiralFile.txt"
-#define COLOR_VALUE_FILE "colorValue.txt"
 
 int trainOnSpiral(Model model, float training_step, int batch_size, int visualized) {
     printf("Start training on spiral suite.\n");
@@ -27,20 +25,39 @@ int trainOnSpiral(Model model, float training_step, int batch_size, int visualiz
 
     log_trace("Precomputing training values...\n");
     srand(time(NULL));
-    int r;
-    int b;
+    int r=0;
+    int b=0;
     int xMax = WINDOW_WIDTH;
     int yMax = WINDOW_HEIGHT;
+    
+    Point *points;
+
     float **inputs = malloc(batch_size * sizeof(float *));
     float **expecteds = malloc(batch_size * sizeof(float *));
     for(int i = 0 ; i < batch_size ; i++) {
-        float x = rand() % xMax;
-        float y = rand() % yMax;
+        int ind = rand() % (getRlen() + getBlen()); 
+
+        if (ind < getRlen()) {
+            points = getRedPoints();
+            r = 1, b = 0;
+        }
+        else {
+            points = getBluePoints();
+            ind -= getRlen();
+            r = 0, b = 1;
+        }
+        if (points[ind].x > xMax || points[ind].y > yMax || points[ind].x < 0 || points[ind].y < 0) {
+            log_debug("Current point : x = %d, y = %d, %s", points[ind].x, points[ind].y, (r > b) ? "red" : "blue");
+        }
+
         inputs[i] = malloc(2 * sizeof(float));
-        inputs[i][0] = x / (float)xMax;
-        inputs[i][1] = y / (float)yMax;
+        inputs[i][0] = (float)(points[ind].x) / (float)xMax;
+        inputs[i][1] = (float)(points[ind].y) / (float)yMax;
         
-        determineColor(x, y, &r, &b);
+        if (inputs[i][0] > 1 || inputs[i][1] > 1 || inputs[i][0] < 0 || inputs[i][1] < 0) {
+            log_debug("Current input: x = %d, y = %d", inputs[i][0], inputs[i][1]);
+        }
+
         expecteds[i] = malloc(2 * sizeof(float));
         if(r > b) {
             expecteds[i][0] = 1.0;
