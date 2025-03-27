@@ -45,23 +45,3 @@ void freeLayer(Layer layer) {
     }
     free(layer);
 }
-
-float layer_hypTangent(float x) {
-    
-    return exp(x) - exp(-x) / exp(x) + exp(-x);
-}
-
-float layer_neuronSum(Layer l, int ind) {
-    float sum = 0.0;
-    for (int i = 0; i < l->n; i++) {
-        sum += l->neurons[i] * l->weight[i][ind]; 
-        // ind represents which neurone we are trying to calculate for
-    }
-
-    return sum;
-}
-
-void layer_neuronVal(Layer l, int ind) {
-    
-    l->next->neurons[ind] = layer_hypTangent(layer_neuronSum(l, ind));
-}

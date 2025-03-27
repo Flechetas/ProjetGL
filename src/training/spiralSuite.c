@@ -11,8 +11,8 @@
 
 
 int trainOnSpiral(Model model, float training_step, int batch_size, int visualized) {
-    printf("Start training on spiral suite.\n");
-    printf("training_step : %f | batch_size : %d\n", training_step, batch_size);
+    log_info("Start training on spiral suite.\n");
+    log_info("training_step : %f | batch_size : %d\n", training_step, batch_size);
     
     if (!draw_isInit()) {
         log_trace("Initialising spiral values...\n");
