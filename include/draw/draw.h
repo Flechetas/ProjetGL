@@ -109,7 +109,7 @@ int displayClear();
  * @brief Function that creates a spiral scene with the sizes given in config.HAVE_ATOF
  * @param renderer Presents the spiral scene
  */
-void drawSpiral(SDL_Renderer *renderer);
+void drawSpiral();
 
 /**
  * @brief Presents the result of the points applied to the model
