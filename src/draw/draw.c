@@ -190,7 +190,7 @@ void fillCircleArray(Point **points, int *len, int start_radius) {
     double x0 = WINDOW_WIDTH/2, y0 = WINDOW_HEIGHT/2;
     int capacity = 0;
 
-    for (int r = start_radius; r < (WINDOW_WIDTH/2+100); r+=180) {
+    for (int r = start_radius; r < (WINDOW_WIDTH/2); r+=180) {
         for (double theta = 0; theta < 2 * M_PI; theta += (2*M_PI)/num_points) {
             int x = x0 + r * cos(theta);
             int y = y0 + r * sin(theta);
