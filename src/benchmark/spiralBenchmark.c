@@ -221,6 +221,7 @@ int benchmarkSpiral(Model model) {
     }
     free(inputs);
     free(expecteds);
+    freePoints();
 
     return 0;
 }

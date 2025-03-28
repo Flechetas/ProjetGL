@@ -49,6 +49,7 @@ bool display_init = false;
     free(inputs);
 }
 
+// Function for visualising the whole spiral using predicted color values based on distance
 void drawSpiralFull() {
     if (!display_init) {
         log_fatal("Window et renderer non initialisees");
@@ -135,13 +136,18 @@ int displaySetup() {
 }
 
 int displayClear() {
-    // A brief delay
-    SDL_Delay(5000);
+    if (display_init) {
+        // A brief delay
+        SDL_Delay(5000);
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-    display_init = false;
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        display_init = false;
+    }
+    else {
+        log_error("Clear non necessaire");
+    }
 
     return 0;
 }
