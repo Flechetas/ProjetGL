@@ -40,9 +40,14 @@ typedef struct {
 } Point;
 
 /**
- * @brief Precomputes the values of the spiral and stores them to an allocated local array
+ * @brief Precomputes the values of the spirals and stores them into allocated local arrays
  */
 void initSpiralPoints();
+
+/**
+ * @brief Precomputes the values of the circles and stores them into allocated local arrays
+ */
+void initCirclePoints();
 
 /**
  * @brief Function that tells you if the spiral arrays have been initialised
@@ -60,6 +65,11 @@ Point *getBluePoints();
 Point *getRedPoints();
 
 /**
+ * @brief Function used to pull the green_points array
+ */
+Point *getGreenPoints();
+
+/**
  * @brief Pulls the length of the blue_points array
  */
 int getBlen();
@@ -68,6 +78,11 @@ int getBlen();
  * @brief Pulls the length of the red_points array
  */
 int getRlen();
+
+/**
+ * @brief Pulls the length of the green_points array
+ */
+int getGlen();
 
 /**
  * @brief Determines all colors at each pixel based on distance from red and blue pixels
@@ -89,6 +104,11 @@ void freePoints();
  * @brief Function that creates a spiral scene with the sizes given in config.HAVE_ATOF
  */
 int displaySpiral();
+
+/**
+ * @brief Function that creates a circle scene
+ */
+int displayCircle();
 
 /**
  * @brief Function that displays a screen based on values calculated by the model passed in the save file

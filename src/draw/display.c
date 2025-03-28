@@ -13,7 +13,7 @@ bool display_init = false;
  *        DRAW FUNCTIONS                                       *
  *-------------------------------------------------------------*/
 
- void drawModelResults(Model model) {
+void drawModelResults(Model model) {
     if (!display_init) {
         log_fatal("Window et renderer non initialisees");
         exit(EXIT_FAILURE);
@@ -36,9 +36,13 @@ bool display_init = false;
 
             log_trace("Starting forward pass");
             float *res = forwardPass(model, inputs);
-
+            int r = (int)(res[0]*255);
+            int b = (int)(res[1]*255);
+            // Determining whether spiralSuite or circleSuite is used. NOTE: there are much better ways to do this
+            int g = (lastLayer(model)->n == 3) ? (g = (int)(res[2]*255)) : (g = 0);
+            
             log_trace("Drawing point (%d, %d)...", i, j);
-            SDL_SetRenderDrawColor(renderer, (int)(res[0]*255), 0, (int)(res[1]*255), SDL_ALPHA_OPAQUE);
+            SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
             SDL_RenderDrawPoint(renderer, i, j);
         }
     }
@@ -47,6 +51,33 @@ bool display_init = false;
 
     log_trace("Freeing resources");
     free(inputs);
+}
+
+// function for drawing larger isolated points
+void drawBiggerPoint(Point pt) {
+    SDL_RenderDrawPoint(renderer, pt.x, pt.y);
+    SDL_RenderDrawPoint(renderer, pt.x, pt.y+1);
+    SDL_RenderDrawPoint(renderer, pt.x+1, pt.y);
+    SDL_RenderDrawPoint(renderer, pt.x+1, pt.y+1);
+}
+
+void drawSpiral() {
+
+    for (int t = 0; t < WINDOW_WIDTH/sqrt(2); t+=2) {
+        int x = WINDOW_WIDTH/(float)2 + t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/(float)2 + t*sin(t*M_PI/180);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE); // Bleu
+        drawBiggerPoint((Point){ .x = x, .y = y });
+    }
+
+    for (int t = 1; t < WINDOW_WIDTH/sqrt(2); t+=2) {
+        int x = WINDOW_WIDTH/(float)2 - t*cos(t*M_PI/180);
+        int y = WINDOW_HEIGHT/(float)2 - t*sin(t*M_PI/180);
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE); // Rouge
+        drawBiggerPoint((Point){ .x = x, .y = y });
+    }
+
+    SDL_RenderPresent(renderer);
 }
 
 void drawSpiralFull() {
@@ -74,23 +105,44 @@ void drawSpiralFull() {
     freePoints();
 }
 
-void drawSpiral() {
-
-    for (int t = 0; t < WINDOW_WIDTH/sqrt(2); t+=2) {
-        int x = WINDOW_WIDTH/(float)2 + t*cos(t*M_PI/180);
-        int y = WINDOW_HEIGHT/(float)2 + t*sin(t*M_PI/180);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE); // Bleu
-        SDL_RenderDrawPoint(renderer, x, y);
+void drawCircles() {
+    if (!display_init) {
+        log_fatal("Window et renderer non initialisees");
+        exit(EXIT_FAILURE);
     }
 
-    for (int t = 1; t < WINDOW_WIDTH/sqrt(2); t+=2) {
-        int x = WINDOW_WIDTH/(float)2 - t*cos(t*M_PI/180);
-        int y = WINDOW_HEIGHT/(float)2 - t*sin(t*M_PI/180);
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE); // Rouge
-        SDL_RenderDrawPoint(renderer, x, y);
+    log_trace("Initialising circle arrays");
+    initCirclePoints();
+    Point *red_points = getRedPoints();
+    Point *blue_points = getBluePoints();
+    Point *green_points = getGreenPoints();
+
+    log_trace("Displaying red points");
+    for (int i = 0; i < getRlen(); i++) {
+        Point curr = red_points[i];
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+        drawBiggerPoint(curr);
+        // Displaying 4 points for better visibility
     }
 
+    log_trace("Displaying blue points");
+    for (int i = 0; i < getRlen(); i++) {
+        Point curr = blue_points[i];
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+        drawBiggerPoint(curr);
+    }
+
+    log_trace("Displaying green points");
+    for (int i = 0; i < getGlen(); i++) {
+        Point curr = green_points[i];
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
+        drawBiggerPoint(curr);
+    }
+
+
+    log_trace("Presenting and freeing");
     SDL_RenderPresent(renderer);
+    freePoints();
 }
 
 /*------------------------------------------------------------------------*
@@ -159,6 +211,14 @@ int displaySpiral() {
     drawSpiral();
     displayClear();
     
+    return 0;
+}
+
+int displayCircle() {
+    displaySetup();
+    drawCircles();
+    displayClear();
+
     return 0;
 }
 

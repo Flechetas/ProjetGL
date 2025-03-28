@@ -7,8 +7,10 @@
 #include "codec/nnf.h"
 #include "log.h"
 #include "neuralnet/model.h"
+#include "neuralnet/layer.h"
 #include "training/numberSuite.h"
 #include "training/spiralSuite.h"
+#include "training/circleSuite.h"
 
 #define BATCH_SIZE 10000
 #define TRAINING_STEP 0.001
@@ -20,7 +22,7 @@ int displayTrainHelp() {
     printf("Usage: train --input <filename.nnf> [options] <output.nnf>\n\n");
     printf("Options :\n");
     printf(" --input <filename.nnf> : the input model file name\n");
-    printf(" --suite <suite> : the training suite used to train the model\n");
+    printf(" --suite <suite> : the training suite used to train the model (spiral, circle, numbers)\n");
     printf(" --batch <int> : the training dataset size\n");
     printf(" --step <float> : the amount of change of each training step\n");
     printf(" --visualise : specifies if the model should be visualized during the training process");
@@ -121,6 +123,15 @@ int execTrain(int argc, char *argv[]) {
     // Train on given suite
     if(strcmp(suite, "spiral") == 0) {
         ret = trainOnSpiral(model, training_step, batch_size, visualized);
+        if(ret != 0) {
+            return ret;
+        }
+    }
+    if(strcmp(suite, "circle") == 0) {
+        if (firstLayer(model)->n != 2 || lastLayer(model)->n != 3) {
+            log_error("Modele invalide. Premiere couche doit avoir une taille de 0, derniere doit avoir une taille de 3");
+        }
+        ret = trainOnCircles(model, training_step, batch_size, visualized);
         if(ret != 0) {
             return ret;
         }

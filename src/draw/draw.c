@@ -9,7 +9,8 @@
 
 Point *red_points;
 Point *blue_points;
-int rlen=0, blen=0;
+Point *green_points = NULL;
+int rlen=0, blen=0, glen=0;
 bool is_init;
 
 // frees the 2 color arrays (to be called at the end of main)
@@ -21,6 +22,11 @@ void freePoints() {
 
     free(red_points);
     free(blue_points);
+
+    if (green_points != NULL) {
+        free(green_points);
+    }
+
     is_init = false;
     rlen=0, blen=0;
 }
@@ -47,6 +53,20 @@ Point *getRedPoints() {
     return red_points;
 }
 
+Point *getGreenPoints() {
+    if (!is_init) {
+        log_error("Tableaux de points non-initialisees");
+        exit(EXIT_FAILURE);
+    }
+    if (glen == 0) {
+        log_error("L'image n'a pas de points vertes");
+        freePoints();
+        exit(EXIT_FAILURE);
+    }
+
+    return green_points;
+}
+
 int getBlen() {
     if (!is_init) {
         log_error("Tableaux de points non-initialisees");
@@ -65,6 +85,21 @@ int getRlen() {
     return rlen;
 }
 
+int getGlen() {
+    if (!is_init) {
+        log_error("Tableaux de points non-initialisees");
+        exit(EXIT_FAILURE);
+    }
+
+    return glen;
+}
+
+
+/*-----------------------------------------------------------------------*
+ *      POINT INITIALISATION FOR SPIRALS                                 *
+ *-----------------------------------------------------------------------*/
+
+ 
 void initSpiralPoints() {
     if (is_init) {
         log_error("Tableaux de points deja initialisees");
@@ -144,6 +179,83 @@ void initSpiralPoints() {
     log_info("Initialisation terminee!");
     is_init = true;
 }
+
+
+/*--------------------------------------------------------------------------------*
+ *      POINT INITIALISATION FOR RINGS                                            *
+ *--------------------------------------------------------------------------------*/
+
+void fillCircleArray(Point **points, int *len, int start_radius) {
+    int num_points = 50;
+    double x0 = WINDOW_WIDTH/2, y0 = WINDOW_HEIGHT/2;
+    int capacity = 0;
+
+    for (int r = start_radius; r < (WINDOW_WIDTH/2+100); r+=180) {
+        for (double theta = 0; theta < 2 * M_PI; theta += (2*M_PI)/num_points) {
+            int x = x0 + r * cos(theta);
+            int y = y0 + r * sin(theta);
+
+            if(x < WINDOW_WIDTH && y < WINDOW_HEIGHT && x >= 0 && y >= 0) {
+                if (*len == capacity){
+                    log_trace("Reallocation du tableau...");
+                    capacity = (capacity == 0) ? 1 : capacity*2;
+
+                    Point *hld = realloc((*points), sizeof(Point)*capacity);
+                    if (hld == NULL) {
+                        log_error("Erreur de reallocation du tableau");
+                        exit(EXIT_FAILURE);
+                    }
+                    (*points) = hld;
+                }            
+
+                log_trace("Insertion de la valeur dans le tableau");
+                (*points)[*len] = (Point){ .x = x, .y = y };
+                (*len)++;
+            }
+        }
+    }
+    log_info("Remplissage du tableau effectue avec succes!");
+
+    Point *hld = realloc(*points, sizeof(Point)*(*len));
+    if (hld == NULL) {
+        log_error("Erreur de reallocation du tableau");
+        exit(EXIT_FAILURE);
+    }
+    *points = hld;
+}
+
+void initCirclePoints() {
+    if (is_init) {
+        log_error("Tableaux de points deja initialisees");
+        exit(EXIT_FAILURE);
+    }
+    
+    log_info("Initialisation des tableaux de points des spirales...");
+    
+    log_info("Allocation des tableaux...");
+    red_points = malloc(sizeof(Point));
+    blue_points = malloc(sizeof(Point));
+    green_points = malloc(sizeof(Point));
+
+    if (red_points == NULL || blue_points == NULL) {
+        log_error("Echec d'allocation de tableau");
+        exit(EXIT_FAILURE);
+    }
+    log_info("Allocation effectuee avec succes!");
+
+    log_info("Creation des cercles...");
+    fillCircleArray(&blue_points, &blen, 60);
+    fillCircleArray(&red_points, &rlen, 120);
+    fillCircleArray(&green_points, &glen, 180);
+
+    log_info("Initialisation terminee!");
+    is_init = true;
+}
+
+/*------------------------------------------------------------*
+ *      VISUALISATION BY DISTANCE                             *
+ *------------------------------------------------------------*/
+
 
 double distance(Point p1, Point p2) {
     return sqrt(pow(p2.x-p1.x, 2) + pow(p2.y-p1.y, 2));

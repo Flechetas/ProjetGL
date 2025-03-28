@@ -9,6 +9,7 @@ int displayDrawHelp() {
     printf("Usage: draw <figure>\n\n");
     printf("Accepted figures:\n");
     printf("  Spiral\n");
+    printf("  Circle\n");
     printf("  Model <filename.nnf>\n\n");
     return 0;
 }
@@ -24,6 +25,9 @@ int draw(int argc, char *argv[]) {
     }
     if(strcmp(argv[2], "Spiral") == 0) {
         return displaySpiral();
+    }
+    if(strcmp(argv[2], "Circle") == 0) {
+        return displayCircle();
     }
     if (strcmp(argv[2], "Model") == 0) {
         if (argc < 4) {
