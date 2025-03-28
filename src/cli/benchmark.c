@@ -4,6 +4,7 @@
 
 #include "benchmark/numberBenchmark.h"
 #include "benchmark/spiralBenchmark.h"
+#include "benchmark/circleBenchmark.h"
 #include "cli/cli.h"
 #include "codec/nnf.h"
 #include "log.h"
@@ -49,6 +50,15 @@ int execBenchmark(int argc, char **argv) {
 
     if(strcmp(suite, "spiral") == 0) {
         ret = benchmarkSpiral(model);
+        freeModel(model);
+        if(ret != 0) {
+            log_error("Error during benchmarking");
+            return -1;
+        }
+        return 0;
+    }
+    if(strcmp(suite, "circle") == 0) {
+        ret = benchmarkCircle(model);
         freeModel(model);
         if(ret != 0) {
             log_error("Error during benchmarking");

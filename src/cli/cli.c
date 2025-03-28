@@ -6,7 +6,7 @@
 
 int exec(int argc, char *argv[]) {
     // log level to read logs (set for info & above by default)
-    log_set_level(1);
+    log_set_level(2);
 
     if(argc < 2) {
         log_error("Not enough arguments.\n");
