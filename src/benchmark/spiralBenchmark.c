@@ -16,8 +16,8 @@
 #define SAMPLE_SIZE 1000
 
 /** 
-* @brief Retourne l’indice de la valeur maximale dans un tableau
-*/
+ * @brief Retourne l’indice de la valeur maximale dans un tableau
+ */
 static int getMaxIndex(float *array, int size) {
     int max_index = 0;
     for (int i = 1; i < size; i++) {
@@ -29,8 +29,8 @@ static int getMaxIndex(float *array, int size) {
 }
 
 /** 
-* @brief Retourne les valeurs de la couche de sortie
-*/
+ * @brief Retourne les valeurs de la couche de sortie
+ */
 float* getOutputValues(Model model) {
     return lastLayer(model)->neurons;
 }
@@ -45,21 +45,9 @@ void benchmarkAccuracyBRUT(Model model, float **inputs, float **expected_outputs
         int predicted_index = getMaxIndex(prediction, output_size);
         int expected_index = getMaxIndex(expected_outputs[i], output_size);
 
-        // DEBUG
-        /*printf("Exemple %d:\n", i);
-        printf("  Entrée           : [%.2f, %.2f]\n", inputs[i][0], inputs[i][1]);
-        printf("  Prédit           : [%f, %f] => classe %d\n", prediction[0], prediction[1], predicted_index);
-        printf("  Sortie attendue  : [%f, %f] => classe %d\n\n", expected_outputs[i][0], expected_outputs[i][1], expected_index);*/
-
         if (predicted_index == expected_index) {
             correct++;
         }
-
-        //DEBUG
-        /*if ((i + 1) % 50000 == 0) {
-            printf("Pause à l'exemple %d. Appuyez sur Entrée pour continuer...\n", i + 1);
-            getchar(); 
-        }*/
     }
 
 
@@ -107,12 +95,6 @@ void benchmarkAccuracyPoints(Model model, int output_size){
         int predicted_class = getMaxIndex(prediction, output_size);
 
         if (predicted_class == 0) correctSpi++; 
-
-        //DEBUG
-        /*if ((i + 1) % 50000 == 0) {
-            printf("Pause à l'exemple %d. Appuyez sur Entrée pour continuer...\n", i + 1);
-            getchar(); 
-        }*/
     }
 
     // points bleus
@@ -125,12 +107,6 @@ void benchmarkAccuracyPoints(Model model, int output_size){
         int predicted_class = getMaxIndex(prediction, output_size);
 
         if (predicted_class == 1) correctSpi++; 
-
-        //DEBUG
-        /*if ((i + 1) % 50000 == 0) {
-            printf("Pause à l'exemple %d. Appuyez sur Entrée pour continuer...\n", i + 1);
-            getchar(); 
-        }*/
     }
 
     clock_t end = clock();
@@ -166,20 +142,9 @@ void benchmarkAccuracyDetermineColor(Model model, float **inputs, int nb_samples
         determineColor(px, py, &r, &b);
         int expected_indexDC = (r > b) ? 0 : 1;
 
-        //DEBUG
-        /*printf("Exemple DT %d:\n", i);
-        printf("  Entrée           : [%.2f, %.2f] (px: %d, %d)\n", inputs[i][0], inputs[i][1], px, py);
-        printf("  Prédiction réseau: [%f, %f] => classe %d\n", prediction[0], prediction[1], predicted_index);
-        printf("  Référence spirale: R=%d B=%d => classe %d\n\n", r, b, expected_indexDC);*/
-
         if (predicted_index == expected_indexDC) {
             correctDC++;
         }
-        //DEBUG
-        /*if ((i + 1) % 50000 == 0) {
-            printf("Pause à l'exemple %d. Appuyez sur Entrée pour continuer...\n", i + 1);
-            getchar(); 
-        }*/
     }
 
     clock_t end = clock();
@@ -207,30 +172,6 @@ void benchmarkAccuracyAndTime(Model model, float **inputs, int nb_samples, float
 
     // Accuracy avec DetermineColor()
     benchmarkAccuracyDetermineColor(model, inputs, nb_samples, output_size);
-
-    /* // Recap affichage
-
-    // métrique précision
-
-    printf("=== Résultat du benchmark (précision avec tableau de points) ===\n");
-    printf("Corrects : %d / %d (nb points)\n", correctSpi, total);
-    printf("Précision : %.2f%%\n", accuracySpi * 100.0);
-    printf("Temps total : %d min %.2f sec\n", minutes, seconds);
-    printf("Temps moyen par instance : %.4f ms\n", avg_time);
-
-    printf("=== Résultat du benchmark (précision expected_outputs) ===\n");
-    printf("Corrects : %d / %d\n", correct, nb_samples);
-    printf("Précision : %.2f%%\n", accuracy * 100.0);
-    printf("Temps total : %d min %.2f sec\n", minutes, seconds);
-    printf("Temps moyen par instance : %.4f ms\n", avg_time);
-
-    printf("=== Résultat du benchmark (précision avec determineColor) ===\n");
-    printf("Corrects : %d / %d\n", correctDC, nb_samples);
-    printf("Précision : %.2f%%\n", accuracyDC * 100.0);
-    printf("Temps total : %d min %.2f sec\n", minutes, seconds);
-    printf("Temps moyen par instance : %.4f ms\n", avg_time);
-
-    */
 }
 
 int benchmarkSpiral(Model model) {
@@ -280,6 +221,7 @@ int benchmarkSpiral(Model model) {
     }
     free(inputs);
     free(expecteds);
+    freePoints();
 
     return 0;
 }

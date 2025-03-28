@@ -20,13 +20,17 @@ void freePoints() {
         exit(EXIT_FAILURE);
     }
 
-    free(red_points);
-    free(blue_points);
-
     if (green_points != NULL) {
         free(green_points);
     }
 
+    if (rlen > 0) {
+        free(red_points);
+    }
+    if (blen > 0) {
+        free(blue_points);
+    }
+    
     is_init = false;
     rlen=0, blen=0;
 }

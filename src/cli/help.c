@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "cli/cli.h"
+#include "log.h"
 
 
 char *commands[] = {
@@ -56,7 +57,6 @@ int displayHelp(int argc, char *argv[]) {
         }
         printf("  ");
         printf("%s", descriptions[i]);
-        free(cmd);
     }
     printf("\n\nRun 'COMMAND --help' for more information on a command.\n\n");
 

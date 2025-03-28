@@ -49,6 +49,7 @@ int execBenchmark(int argc, char **argv) {
 
     if(strcmp(suite, "spiral") == 0) {
         ret = benchmarkSpiral(model);
+        freeModel(model);
         if(ret != 0) {
             log_error("Error during benchmarking");
             return -1;
@@ -57,6 +58,7 @@ int execBenchmark(int argc, char **argv) {
     }
     if(strcmp(suite, "numbers") == 0) {
         ret = benchmarkNumbers(model);
+        freeModel(model);
         if(ret != 0) {
             log_error("Error during benchmarking");
             return -1;
